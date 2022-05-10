@@ -1,0 +1,11 @@
+li a{
+    color: aliceblue;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 60px;
+    text-decoration: none;
+}
+li{
+    list-style: none;
+
+}

@@ -1,0 +1,110 @@
+<!-- <h1>System User Registration Form</h1>
+<form action="">
+    <label for=""> Name</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> User Role</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> User Name</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> Password</label>
+    <input type="password" name="" id=""><br><br>
+    <label for=""> Confirm Password</label>
+    <input type="password" name="" id=""><br><br>
+    <label for=""> Mobile</label>
+    <input type="number" name="" id=""><br><br>
+    <label for=""> Email</label>
+    <input type="email" name="" id=""><br><br>
+    <label for=""> Date Of Birth</label>
+    <input type="date" name="" id=""><br><br>
+    <label for=""> Address</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> City</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> State</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> Country</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> Photo</label>
+    <input type="text" name="" id=""><br><br>
+    <button>Submit</button>
+    <button>Reset</button>
+</form> -->
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="exampleModalLabel">System User Registration Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="userform">
+                    <div>
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" formControlName="name">
+                        <span class="text-danger"
+                            *ngIf="userform.controls['name'].dirty && userform.hasError('required','name')">*
+                            Name
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="username" class="form-label">User Name</label>
+                        <input type="text" class="form-control" id="username" formControlName="username">
+                        <span class="text-danger"
+                            *ngIf="userform.controls['username'].dirty && userform.hasError('required','username')">*User
+                            Name
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="pwd" class="form-label">Password</label>
+                        <input type="text" class="form-control" id="pwd" formControlName="pwd">
+                        <span class="text-danger"
+                            *ngIf="userform.controls['pwd'].dirty && userform.hasError('required','pwd')">*Password
+
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="mobile" class="form-label">Mobile</label>
+                        <input type="number" class="form-control" id="mobile" formControlName="mobile">
+                        <span class="text-danger"
+                            *ngIf="userform.controls['mobile'].dirty && userform.hasError('required','mobile')">*Mobile
+                            number
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="dob" class="form-label">Date Of Birth</label>
+                        <input type="date" class="form-control" id="dob" formControlName="dob">
+                        <span class="text-danger"
+                            *ngIf="userform.controls['dob'].dirty && userform.hasError('required','dob')">*Date of
+                            birth
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" formControlName="city">
+                        <span class="text-danger"
+                            *ngIf="userform.controls['city'].dirty && userform.hasError('required','city')">*City
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="state" class="form-label">State</label>
+                        <input type="text" class="form-control" id="state" formControlName="state">
+                        <span class="text-danger"
+                            *ngIf="userform.controls['state'].dirty && userform.hasError('required','state')">*State
+                            is required!!</span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" [disabled]="!userform.valid">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

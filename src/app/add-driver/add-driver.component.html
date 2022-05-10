@@ -1,0 +1,94 @@
+<!-- <h1>Driver Registration Form</h1>
+<form action="">
+    <label for=""> Name</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> Mobile</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> Licence Number</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> Licence End Date</label>
+    <input type="date" name="" id=""><br><br>
+    <label for=""> Address</label>
+    <input type="number" name="" id=""><br><br>
+    <label for=""> City</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> State</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> Country</label>
+    <input type="text" name="" id=""><br><br>
+    <label for=""> Photo</label>
+    <input type="text" name="" id=""><br><br>
+    <button>Submit</button>
+    <button>Reset</button>
+</form> -->
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="exampleModalLabel">Driver Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="driverform">
+                    <div>
+                        <label for="drivername" class="form-label">Driver Name</label>
+                        <input type="text" class="form-control" id="drivername" formControlName="drivername">
+                        <span class="text-danger"
+                            *ngIf="driverform.controls['drivername'].dirty && driverform.hasError('required','drivername')">*Driver
+                            Name
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="mobile" class="form-label">Mobile</label>
+                        <input type="number" class="form-control" id="mobile" formControlName="mobile">
+                        <span class="text-danger"
+                            *ngIf="driverform.controls['mobile'].dirty && driverform.hasError('required','mobile')">*Mobile
+                            number
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="licencenumber" class="form-label">Licence Number</label>
+                        <input type="text" class="form-control" id="licencenumber" formControlName="licencenumber">
+                        <span class="text-danger"
+                            *ngIf="driverform.controls['licencenumber'].dirty && driverform.hasError('required','licencenumber')">*Licence
+                            number
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="licenceenddate" class="form-label">Licence End Date</label>
+                        <input type="date" class="form-control" id="licenceenddate" formControlName="licenceenddate">
+                        <span class="text-danger"
+                            *ngIf="driverform.controls['licenceenddate'].dirty && driverform.hasError('required','licenceenddate')">*Licence
+                            end date
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" formControlName="city">
+                        <span class="text-danger"
+                            *ngIf="driverform.controls['city'].dirty && driverform.hasError('required','city')">*City
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="state" class="form-label">State</label>
+                        <input type="text" class="form-control" id="state" formControlName="state">
+                        <span class="text-danger"
+                            *ngIf="driverform.controls['state'].dirty && driverform.hasError('required','state')">*State
+                            is required!!</span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" [disabled]="!driverform.valid">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
