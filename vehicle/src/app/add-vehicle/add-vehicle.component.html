@@ -1,29 +1,45 @@
-<!-- <h1>Vehicle Registration Form</h1>
-<form action="">
-    <label for=""> Vehicle Number</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Vehicle Type</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Driver Name</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Chasis Number</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Color</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Registration Date</label>
-    <input type="date" name="" id=""><br><br>
-    <label for=""> Vehicle Image</label>
-    <input type="text" name="" id=""><br><br>
-    <button>Submit</button>
-    <button>Reset</button>
-</form> -->
-
-
-
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+    (click)="showOrHide()">
+    Add Vehicle
+</button><br><br>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Vehicle Number</th>
+            <th scope="col">Vehicle Type</th>
+            <th scope="col">Driver Name</th>
+            <th scope="col">Vehicle Color</th>
+            <th scope="col">Registeration Date</th>
+            <th scope="col">Chasis No</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of store">
+
+            <td>{{user.vehiclenumber}}</td>
+            <td>{{user.vehicletype}}</td>
+            <td>{{user.drivername}}</td>
+            <td>{{user.color}}</td>
+            <td>{{user.registerdate}}</td>
+            <td>{{user.chasisno}}</td>
+            <td>{{user.cost}}</td>
+            <td>
+                <button type="button" (click)="onEdit(user)" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    Edit
+                </button>&nbsp;&nbsp;
+                <button type="button" (click)="delete(user,user)" class=" btn btn-primary"
+                    data-bs-target="#exampleModal" style="background-color: red;">
+                    Remove
+                </button><br><br>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -34,7 +50,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="vehicleform">
+                <form [formGroup]="vehicleform" (ngSubmit)="adduser(this.vehicleform.value)">
                     <div>
                         <label for="vehiclenumber" class="form-label">Vehicle Number</label>
                         <input type="text" class="form-control" id="vehiclenumber" formControlName="vehiclenumber">
@@ -60,14 +76,6 @@
                             is required!!</span>
                     </div>
                     <div>
-                        <label for="chasisno" class="form-label">Chasis Number</label>
-                        <input type="text" class="form-control" id="chasisno" formControlName="chasisno">
-                        <span class="text-danger"
-                            *ngIf="vehicleform.controls['chasisno'].dirty && vehicleform.hasError('required','chasisno')">*Chasis
-                            number
-                            is required!!</span>
-                    </div>
-                    <div>
                         <label for="color" class="form-label">Color</label>
                         <input type="text" class="form-control" id="color" formControlName="color">
                         <span class="text-danger"
@@ -75,11 +83,20 @@
                             is required!!</span>
                     </div>
                     <div>
-                        <label for="date" class="form-label">Registration Date</label>
-                        <input type="date" class="form-control" id="date" formControlName="date">
+                        <label for="registerdate" class="form-label">Registration Date</label>
+                        <input type="registerdate" class="form-control" id="registerdate"
+                            formControlName="registerdate">
                         <span class="text-danger"
-                            *ngIf="vehicleform.controls['date'].dirty && vehicleform.hasError('required','date')">*Registration
+                            *ngIf="vehicleform.controls['registerdate'].dirty && vehicleform.hasError('required','registerdate')">*Registration
                             date
+                            is required!!</span>
+                    </div>
+                    <div>
+                        <label for="chasisno" class="form-label">Chasis Number</label>
+                        <input type="text" class="form-control" id="chasisno" formControlName="chasisno">
+                        <span class="text-danger"
+                            *ngIf="vehicleform.controls['chasisno'].dirty && vehicleform.hasError('required','chasisno')">*Chasis
+                            number
                             is required!!</span>
                     </div>
                     <div>
@@ -92,7 +109,11 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" [disabled]="!vehicleform.valid">Add</button>
+                <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="cancel" class="btn btn-primary" [disabled]="!vehicleform.valid"
+                    *ngIf="showAdd" (click)="adduser(this.vehicleform.value)">Add</button>
+                <button type="button" id="cancel" class="btn btn-primary" [disabled]="!vehicleform.valid"
+                    (click)="update(this.vehicleform.value)" *ngIf="showUpdate">Update</button>
             </div>
         </div>
     </div>

@@ -1,7 +1,9 @@
-<!-- <app-firstmenu></app-firstmenu> -->
-<nav class="navbar navbar-light bg-primary" style="color: aliceblue;">
+<!-- <nav class="navbar navbar-dark bg-primary" *ngIf="api.bool"> -->
+<nav class="navbar navbar-dark bg-primary">
     <div class="container-fluid">
-        <h1>Vehicle Management System</h1>
+        <i style="font-size: 40px;" class="fas fa-shipping-fast">
+        </i>
+        <h1 class="text-light">Vehicle Management</h1>
         <div class="d-flex">
             <li><a routerLink="home">Home</a></li>
             <li><a routerLink="aboutus">About Us</a></li>
@@ -10,4 +12,4 @@
         </div>
     </div>
 </nav>
-<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'app-adminpage',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminpageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private api:ApiService) { }
 
   ngOnInit(): void {
   }

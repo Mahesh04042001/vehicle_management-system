@@ -1,48 +1,39 @@
-<!-- <nav class="navbar navbar-light bg-primary" style="color: aliceblue;">
+<nav class="navbar navbar-dark bg-primary" style="color: aliceblue;">
     <div class="container-fluid">
-        <h1>Vehicle Management System</h1>
+        <i style="font-size: 40px;" class="fas fa-shipping-fast">
+        </i>
+        <h1 class="text-light">Vehicle Management</h1>
         <div class="d-flex">
-            <li><a>Administration</a></li>
-            <li><a>Report</a></li>
-            <li><a>My Account</a></li>
-            <li><a>Change Password</a></li>
-            <li><a routerLink="app">Logout</a></li>
-        </div>
-    </div>
-
-</nav> -->
-<nav class="navbar navbar-light bg-primary" style="color: aliceblue;">
-    <div class="container-fluid">
-        <h1>Vehicle Management System</h1>
-        <div class="d-flex">
-            <div class="dropdown show">
-                <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown">
+                <button class="bg-primary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     Administration
-                </a>
+                </button>
+                <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" routerLink="/adduser">Add New System User</a></li>
+                    <li><a class="dropdown-item" routerLink="/adddriver">Add New Driver</a></li>
+                    <li><a class="dropdown-item" routerLink="/addvehicle">Add New Vehicle</a></li>
+                    <li><a class="dropdown-item" routerLink="/addfuel">Add Fuel</a></li>
+                    <li><a class="dropdown-item" routerLink="/addmaintain">Add Maintanence</a></li>
+                    <li><a class="dropdown-item" routerLink="/addinsurance">Add Insurance</a></li>
 
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
+                </ul>
             </div>
-            <div class="dropdown show">
-                <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown">
+                <button class="bg-primary" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     Report
-                </a>
-
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
+                </button>
+                <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton">
+                    <li class="list"><a class="dropdown-item" href="#">Action</a></li>
+                    <li class="list"><a class="dropdown-item" href="#">Another action</a></li>
+                    <li class="list"><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
             </div>
             <li><a>My Account</a></li>
             <li><a>Change Password</a></li>
-            <li><a routerLink="app">Logout</a></li>
+            <li><a routerLink="/home">Logout</a></li>
         </div>
     </div>
-
 </nav>
+<router-outlet></router-outlet>

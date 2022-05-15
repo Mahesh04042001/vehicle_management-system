@@ -1,11 +1,17 @@
 li a{
-    color: aliceblue;
+    color:white;
     cursor: pointer;
     font-weight: bold;
-    margin-left: 60px;
+    margin-left: 100px;
     text-decoration: none;
 }
 li{
     list-style: none;
 
+}
+.text-light{
+    margin-left: -250px;
+}
+.fas{
+    color: white;
 }

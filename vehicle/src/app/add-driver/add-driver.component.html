@@ -1,32 +1,43 @@
-<!-- <h1>Driver Registration Form</h1>
-<form action="">
-    <label for=""> Name</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Mobile</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Licence Number</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Licence End Date</label>
-    <input type="date" name="" id=""><br><br>
-    <label for=""> Address</label>
-    <input type="number" name="" id=""><br><br>
-    <label for=""> City</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> State</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Country</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Photo</label>
-    <input type="text" name="" id=""><br><br>
-    <button>Submit</button>
-    <button>Reset</button>
-</form> -->
-
-
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+    (click)="showOrHide()">
+    Add Driver
+</button><br><br>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Driver Name</th>
+            <th scope="col">Mobile</th>
+            <th scope="col">Licence Number</th>
+            <th scope="col">Licence End date</th>
+            <th scope="col">City</th>
+            <th scope="col">State</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of store">
+
+            <td>{{user.drivername}}</td>
+            <td>{{user.mobile}}</td>
+            <td>{{user.licencenumber}}</td>
+            <td>{{user.licenceenddate}}</td>
+            <td>{{user.city}}</td>
+            <td>{{user.state}}</td>
+            <td>
+                <button type="button" (click)="onEdit(user)" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    Edit
+                </button>&nbsp;&nbsp;
+                <button type="button" (click)="delete(user,user)" class=" btn btn-primary"
+                    data-bs-target="#exampleModal" style="background-color: red;">
+                    Remove
+                </button><br><br>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -37,7 +48,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="driverform">
+                <form [formGroup]="driverform" (ngSubmit)="adduser(this.driverform.value)">
                     <div>
                         <label for="drivername" class="form-label">Driver Name</label>
                         <input type="text" class="form-control" id="drivername" formControlName="drivername">
@@ -87,7 +98,11 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" [disabled]="!driverform.valid">Add</button>
+                <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="cancel" class="btn btn-primary" [disabled]="!driverform.valid" *ngIf="showAdd"
+                    (click)="adduser(this.driverform.value)">Add</button>
+                <button type="button" id="cancel" class="btn btn-primary" [disabled]="!driverform.valid"
+                    (click)="update(this.driverform.value)" *ngIf="showUpdate">Update</button>
             </div>
         </div>
     </div>

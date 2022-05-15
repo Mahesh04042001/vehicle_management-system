@@ -1,40 +1,44 @@
-<!-- <h1>System User Registration Form</h1>
-<form action="">
-    <label for=""> Name</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> User Role</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> User Name</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Password</label>
-    <input type="password" name="" id=""><br><br>
-    <label for=""> Confirm Password</label>
-    <input type="password" name="" id=""><br><br>
-    <label for=""> Mobile</label>
-    <input type="number" name="" id=""><br><br>
-    <label for=""> Email</label>
-    <input type="email" name="" id=""><br><br>
-    <label for=""> Date Of Birth</label>
-    <input type="date" name="" id=""><br><br>
-    <label for=""> Address</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> City</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> State</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Country</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Photo</label>
-    <input type="text" name="" id=""><br><br>
-    <button>Submit</button>
-    <button>Reset</button>
-</form> -->
-
-
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+    (click)="showOrHide()">
+    Add User
+</button><br><br>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Mobile</th>
+            <th scope="col">Date Of Birth</th>
+            <th scope="col">City</th>
+            <th scope="col">State</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of store">
+
+            <td>{{user.name}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.mobile}}</td>
+            <td>{{user.dob}}</td>
+            <td>{{user.city}}</td>
+            <td>{{user.state}}</td>
+            <td>
+                <button type="button" (click)="onEdit(user)" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    Edit
+                </button>&nbsp;&nbsp;
+                <button type="button" (click)="delete(user,user)" class=" btn btn-primary"
+                    data-bs-target="#exampleModal" style="background-color: red;">
+                    Remove
+                </button><br><br>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -45,40 +49,64 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="userform">
+                <form [formGroup]="userform" (ngSubmit)="adduser(this.userform.value)">
                     <div>
-                        <label for="name" class="form-label">Name</label>
+                        <!-- <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" formControlName="name">
                         <span class="text-danger"
                             *ngIf="userform.controls['name'].dirty && userform.hasError('required','name')">*
                             Name
-                            is required!!</span>
+                            is required!!</span> -->
+                        <mat-form-field appearance="outline" class="button">
+                            <mat-label for="name">Name</mat-label>
+                            <input matInput placeholder="Enter your name here.." id="name" formControlName="name">
+                            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                        </mat-form-field>
                     </div>
                     <div>
-                        <label for="username" class="form-label">User Name</label>
+                        <!-- <label for="username" class="form-label">User Name</label>
                         <input type="text" class="form-control" id="username" formControlName="username">
                         <span class="text-danger"
                             *ngIf="userform.controls['username'].dirty && userform.hasError('required','username')">*User
                             Name
-                            is required!!</span>
+                            is required!!</span> -->
+                        <mat-form-field appearance="outline" class="button">
+                            <mat-label for="username">User Name</mat-label>
+                            <input matInput placeholder="Enter username here.." id="username"
+                                formControlName="username">
+                            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                        </mat-form-field>
                     </div>
                     <div>
-                        <label for="pwd" class="form-label">Password</label>
-                        <input type="text" class="form-control" id="pwd" formControlName="pwd">
+                        <!-- <label for="pwd" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="pwd" formControlName="pwd">
                         <span class="text-danger"
                             *ngIf="userform.controls['pwd'].dirty && userform.hasError('required','pwd')">*Password
 
-                            is required!!</span>
+                            is required!!</span> -->
+                        <mat-form-field appearance="fill" class="button">
+                            <mat-label for="pwd">Enter your password</mat-label>
+                            <input matInput [type]="hide ? 'password' : 'text'" id="pwd" formControlName="pwd">
+                            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                                [attr.aria-pressed]="hide">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                        </mat-form-field>
                     </div>
-                    <div>
-                        <label for="mobile" class="form-label">Mobile</label>
+                    <div class="space">
+                        <label for="mobile" class="form-label button">Mobile</label>
                         <input type="number" class="form-control" id="mobile" formControlName="mobile">
                         <span class="text-danger"
                             *ngIf="userform.controls['mobile'].dirty && userform.hasError('required','mobile')">*Mobile
                             number
                             is required!!</span>
+                        <!-- <mat-form-field appearance="fill">
+                            <mat-label for="mobile">Phone number</mat-label>
+                            <example-tel-input id="mobile" formControlName="mobile" required></example-tel-input>
+                            <mat-icon matSuffix>phone</mat-icon>
+                        </mat-form-field> -->
                     </div>
-                    <div>
+                    <div class="space">
                         <label for="dob" class="form-label">Date Of Birth</label>
                         <input type="date" class="form-control" id="dob" formControlName="dob">
                         <span class="text-danger"
@@ -87,23 +115,37 @@
                             is required!!</span>
                     </div>
                     <div>
-                        <label for="city" class="form-label">City</label>
+                        <!-- <label for="city" class="form-label">City</label>
                         <input type="text" class="form-control" id="city" formControlName="city">
                         <span class="text-danger"
                             *ngIf="userform.controls['city'].dirty && userform.hasError('required','city')">*City
-                            is required!!</span>
+                            is required!!</span> -->
+                        <mat-form-field appearance="outline" class="button">
+                            <mat-label for="city">City</mat-label>
+                            <input matInput placeholder="Enter city here.." id="city" formControlName="city">
+                            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                        </mat-form-field>
                     </div>
                     <div>
-                        <label for="state" class="form-label">State</label>
+                        <!-- <label for="state" class="form-label">State</label>
                         <input type="text" class="form-control" id="state" formControlName="state">
                         <span class="text-danger"
                             *ngIf="userform.controls['state'].dirty && userform.hasError('required','state')">*State
-                            is required!!</span>
+                            is required!!</span> -->
+                        <mat-form-field appearance="outline" class="button">
+                            <mat-label for="state">Sate</mat-label>
+                            <input matInput placeholder="Enter state here.." id="state" formControlName="state">
+                            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                        </mat-form-field>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" [disabled]="!userform.valid">Add</button>
+                <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="cancel" class="btn btn-primary" [disabled]="!userform.valid" *ngIf="showAdd"
+                    (click)="adduser(this.userform.value)">Add</button>
+                <button type="button" id="cancel" class="btn btn-primary" [disabled]="!userform.valid"
+                    (click)="update(this.userform.value)" *ngIf="showUpdate">Update</button>
             </div>
         </div>
     </div>

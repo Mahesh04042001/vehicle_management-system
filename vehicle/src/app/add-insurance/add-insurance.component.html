@@ -1,30 +1,43 @@
-<!-- <h1>Add Vehicle Insurance</h1>
-<form action="">
-    <label for=""> Vehicle Number</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Vehicle Type</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Insurance Company</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Policy Number</label>
-    <input type="text" name="" id=""><br><br>
-    <label for=""> Start Date</label>
-    <input type="date" name="" id=""><br><br>
-    <label for=""> End Date</label>
-    <input type="date" name="" id=""><br><br>
-    <label for=""> Total Cost</label>
-    <input type="number" name="" id=""><br><br>
-    <label for=""> Description</label>
-    <input type="text" name="" id=""><br><br>
-    <button>Submit</button>
-    <button>Reset</button>
-</form> -->
-
-
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+    (click)="showOrHide()">
+    Add Insurance Details
+</button><br><br>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Vehicle Number</th>
+            <th scope="col">Vehicle Type</th>
+            <th scope="col">Company</th>
+            <th scope="col">Starting Date</th>
+            <th scope="col">Ending Date</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of store">
+
+            <td>{{user.vehiclenumber}}</td>
+            <td>{{user.vehicletype}}</td>
+            <td>{{user.company}}</td>
+            <td>{{user.startdate}}</td>
+            <td>{{user.enddate}}</td>
+            <td>{{user.cost}}</td>
+            <td>
+                <button type="button" (click)="onEdit(user)" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    Edit
+                </button>&nbsp;&nbsp;
+                <button type="button" (click)="delete(user,user)" class=" btn btn-primary"
+                    data-bs-target="#exampleModal" style="background-color: red;">
+                    Remove
+                </button><br><br>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -35,7 +48,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="insuranceform">
+                <form [formGroup]="insuranceform" (ngSubmit)="adduser(this.insuranceform.value)">
                     <div>
                         <label for="vehiclenumber" class="form-label">Vehicle Number</label>
                         <input type="text" class="form-control" id="vehiclenumber" formControlName="vehiclenumber">
@@ -86,7 +99,11 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" [disabled]="!insuranceform.valid">Add</button>
+                <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="cancel" class="btn btn-primary" [disabled]="!insuranceform.valid"
+                    *ngIf="showAdd" (click)="adduser(this.insuranceform.value)">Add</button>
+                <button type="button" id="cancel" class="btn btn-primary" [disabled]="!insuranceform.valid"
+                    (click)="update(this.insuranceform.value)" *ngIf="showUpdate">Update</button>
             </div>
         </div>
     </div>

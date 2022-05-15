@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'app-homemenulayout',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomemenulayoutComponent implements OnInit {
 
-  constructor() { }
+  getbool:any=true;
+  constructor(public api:ApiService) { }
 
   ngOnInit(): void {
+  
   }
+  // onGenerate(getbool:any){
+  //   this.getbool=getbool;
+  //   console.log(this.getbool);
+
+  // }
+
 
 }
