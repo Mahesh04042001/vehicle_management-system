@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators,FormBuilder, NgForm } from '@angular/forms';
 import { ApiService } from '../service/api.service';
+import { SharedserviceService } from '../service/sharedservice.service';
 
 @Component({
   selector: 'app-add-driver',
   templateUrl: './add-driver.component.html',
-  styleUrls: ['./add-driver.component.css']
+  styleUrls: ['./add-driver.component.css'],
+  providers:[SharedserviceService]
 })
 export class AddDriverComponent implements OnInit {
   driverform!:FormGroup;
@@ -13,7 +15,7 @@ export class AddDriverComponent implements OnInit {
   store:any=[];
   showAdd!:boolean;
   showUpdate!:boolean;
-  constructor(private formbuilder:FormBuilder,private api:ApiService) { }
+  constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
     this.driverform=this.formbuilder.group({
@@ -37,7 +39,7 @@ export class AddDriverComponent implements OnInit {
   
   adduser(formvalue:NgForm){
       console.log(formvalue);
-      this.api.adddriverdata(formvalue).subscribe(res=>{
+      this.api.addDriverData(formvalue).subscribe(res=>{
       console.log("hello");
       alert("Your data was posted successfully!");
       this.driverform.reset();
@@ -50,7 +52,7 @@ export class AddDriverComponent implements OnInit {
     });
   }
   getuser(){
-    this.api.getdriverdata().subscribe(res=>{
+    this.api.getDriverData().subscribe(res=>{
       console.log(res);
       console.log("response is comming");
       this.alluser=res;
@@ -60,7 +62,7 @@ export class AddDriverComponent implements OnInit {
             if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
               const element = this.alluser[key];
               console.log(element.id);
-              this.api.getalldriverdata(element.id).subscribe(res=>{
+              this.api.getAllDriverData(element.id).subscribe(res=>{
                 console.log(res);
                 this.store.push(res);
                 console.log("data is came");
@@ -79,7 +81,7 @@ export class AddDriverComponent implements OnInit {
     console.log("delete called"+data._id);
     console.log("delete called"+data1._rev);
 
-    this.api.deletedriverdata(data._id,data1._rev).subscribe(res=>{
+    this.api.deleteDriverData(data._id,data1._rev).subscribe(res=>{
       console.log("delete response get");
       console.log(res);
       alert("your data has deleted, please refresh the page");
@@ -106,7 +108,7 @@ export class AddDriverComponent implements OnInit {
 
   update(formvalue:NgForm){
     console.log(formvalue);
-    this.api.updatedriverdata(formvalue).subscribe(res=>{
+    this.api.updateDriverData(formvalue).subscribe(res=>{
       console.log("update success");
       console.log(res);
       alert("Your data was updated successfully!");

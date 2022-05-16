@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup,FormBuilder, NgForm } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { ApiService } from '../service/api.service';
+import { SharedserviceService } from '../service/sharedservice.service';
 
 @Component({
   selector: 'app-add-fuel',
   templateUrl: './add-fuel.component.html',
-  styleUrls: ['./add-fuel.component.css']
+  styleUrls: ['./add-fuel.component.css'],
+  providers:[SharedserviceService]
 })
 export class AddFuelComponent implements OnInit {
 
@@ -15,7 +17,7 @@ export class AddFuelComponent implements OnInit {
   store:any=[];
   showAdd!:boolean;
   showUpdate!:boolean;
-  constructor(private formbuilder:FormBuilder,private api:ApiService) { }
+  constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
     this.fuelform=this.formbuilder.group({
@@ -39,7 +41,7 @@ export class AddFuelComponent implements OnInit {
   
   adduser(formvalue:NgForm){
       console.log(formvalue);
-      this.api.addfueldata(formvalue).subscribe(res=>{
+      this.api.addFuelData(formvalue).subscribe(res=>{
       console.log("hello");
       alert("Your data was posted successfully!");
       this.fuelform.reset();
@@ -52,7 +54,7 @@ export class AddFuelComponent implements OnInit {
     });
   }
   getuser(){
-    this.api.getfuledata().subscribe(res=>{
+    this.api.getFuleData().subscribe(res=>{
       console.log(res);
       console.log("response is comming");
       this.alluser=res;
@@ -62,7 +64,7 @@ export class AddFuelComponent implements OnInit {
             if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
               const element = this.alluser[key];
               console.log(element.id);
-              this.api.getallfueldata(element.id).subscribe(res=>{
+              this.api.getAllFuelData(element.id).subscribe(res=>{
                 console.log(res);
                 this.store.push(res);
                 console.log("data is came");
@@ -81,7 +83,7 @@ export class AddFuelComponent implements OnInit {
     console.log("delete called"+data._id);
     console.log("delete called"+data1._rev);
 
-    this.api.deletefueldata(data._id,data1._rev).subscribe(res=>{
+    this.api.deleteFuelData(data._id,data1._rev).subscribe(res=>{
       console.log("delete response get");
       console.log(res);
       alert("your data has deleted, please refresh the page");
@@ -107,7 +109,7 @@ export class AddFuelComponent implements OnInit {
 
   update(formvalue:NgForm){
     console.log(formvalue);
-    this.api.updatefueldata(formvalue).subscribe(res=>{
+    this.api.updateFuelData(formvalue).subscribe(res=>{
       console.log("update success");
       console.log(res);
       alert("Your data was updated successfully!");

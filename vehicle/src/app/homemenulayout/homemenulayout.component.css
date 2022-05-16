@@ -15,3 +15,40 @@ li{
 .fas{
     color: white;
 }
+
+
+/*--------------------------------------------------------*/
+/* .logo{
+    text-align: center;
+    padding: 2.6rem 1rem;
+    
+}
+img{
+    width:200px;
+}
+.mat-icon{
+    /* vertical-align: middle;
+    margin-right: 1rem;
+    color: #2c3344;
+
+}
+
+mat-divider{
+    border-top-width: 2px;
+    border-color: white;
+}
+.mat-list-item{
+    color: #2c3344;
+    font-size: 0.8rem;
+    height: 44px;
+    margin-bottom: 4px;
+    border-radius: 5px;
+    margin: 0 8px;
+}
+.mat-list-item:hover{
+    background-color: white;
+    color: #0f172a;
+}
+.list-item-active{
+    color: white;
+} */

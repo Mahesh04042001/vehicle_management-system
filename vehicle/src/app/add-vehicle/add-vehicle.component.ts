@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup,FormBuilder, NgForm } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { ApiService } from '../service/api.service';
+import { SharedserviceService } from '../service/sharedservice.service';
 
 
 @Component({
   selector: 'app-add-vehicle',
   templateUrl: './add-vehicle.component.html',
-  styleUrls: ['./add-vehicle.component.css']
+  styleUrls: ['./add-vehicle.component.css'],
+  providers:[SharedserviceService]
 })
 export class AddVehicleComponent implements OnInit {
 
@@ -16,7 +18,7 @@ export class AddVehicleComponent implements OnInit {
   store:any=[];
   showAdd!:boolean;
   showUpdate!:boolean;
-  constructor(private formbuilder:FormBuilder,private api:ApiService) { }
+  constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
     this.vehicleform=this.formbuilder.group({
@@ -41,7 +43,7 @@ export class AddVehicleComponent implements OnInit {
   
   adduser(formvalue:NgForm){
       console.log(formvalue);
-      this.api.addvehicledata(formvalue).subscribe(res=>{
+      this.api.addVehicleData(formvalue).subscribe(res=>{
       console.log("hello");
       alert("Your data was posted successfully!");
       this.vehicleform.reset();
@@ -54,7 +56,7 @@ export class AddVehicleComponent implements OnInit {
     });
   }
   getuser(){
-    this.api.getvehicledata().subscribe(res=>{
+    this.api.getVehicleData().subscribe(res=>{
       console.log(res);
       console.log("response is comming");
       this.alluser=res;
@@ -64,7 +66,7 @@ export class AddVehicleComponent implements OnInit {
             if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
               const element = this.alluser[key];
               console.log(element.id);
-              this.api.getallvehicledata(element.id).subscribe(res=>{
+              this.api.getAllVehicleData(element.id).subscribe(res=>{
                 console.log(res);
                 this.store.push(res);
                 console.log("data is came");
@@ -83,7 +85,7 @@ export class AddVehicleComponent implements OnInit {
     console.log("delete called"+data._id);
     console.log("delete called"+data1._rev);
 
-    this.api.deletevehicledata(data._id,data1._rev).subscribe(res=>{
+    this.api.deleteVehicleData(data._id,data1._rev).subscribe(res=>{
       console.log("delete response get");
       console.log(res);
       alert("your data has deleted, please refresh the page");
@@ -111,7 +113,7 @@ export class AddVehicleComponent implements OnInit {
 
   update(formvalue:NgForm){
     console.log(formvalue);
-    this.api.updatevehicledata(formvalue).subscribe(res=>{
+    this.api.updateVehicleData(formvalue).subscribe(res=>{
       console.log("update success");
       console.log(res);
       alert("Your data was updated successfully!");

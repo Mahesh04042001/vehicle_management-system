@@ -14,6 +14,7 @@ import { AddFuelComponent } from './add-fuel/add-fuel.component';
 import { AddMaintanenceComponent } from './add-maintanence/add-maintanence.component';
 import { AddInsuranceComponent } from './add-insurance/add-insurance.component';
 const routes: Routes = [
+  {path:'',redirectTo:'login',pathMatch:'full'},
   {path:'menu',component:HomemenulayoutComponent},
   {path:'home',component:HomeComponent},
   {path:'contactus',component:ContactUsComponent},
@@ -28,6 +29,9 @@ const routes: Routes = [
   {path:'addfuel',component:AddFuelComponent},
   {path:'addmaintain',component:AddMaintanenceComponent},
   {path:'addinsurance',component:AddInsuranceComponent}
+  // {path:'',redirectTo:'home',pathMatch:'full'},
+  // {path:'home',component:HomeComponent},
+  // {path:'aboutus',component:AboutUsComponent}
 
 
 ];

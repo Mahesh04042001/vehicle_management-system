@@ -3,5 +3,39 @@
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
 @import url(../node_modules/bootstrap/dist/css/bootstrap.css);
 @import url(../node_modules/bootstrap/dist/css/bootstrap.min.css);
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import url('https://fonts.googleapis.com/css2?family=Battambang:wght@300&family=Big+Shoulders+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
+
+
+html, body { height: 100%;
+
+        background-color:white;
+    } 
+body { margin: 0;
+    /* font-family: 'Big Shoulders Display', cursive;} */
+    font-family: 'Roboto Slab', serif;
+}
+
+
+.searchBar{
+    width: 500px;
+    margin: 10px 250px 50px;
+}
+.myTable th{
+    background-color: black;
+    color: white;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+}
+tr, td{
+width: 80px;
+margin-left: 100px;
+text-align: center;
+color:white;
+font-size:16px;
+font-weight: 400;
+letter-spacing: 1px;
+background-color: rgb(48, 132, 184);
+}
+

@@ -11,71 +11,71 @@ export class ApiService {
   constructor(private http:HttpClient) { }
 
   //Add User Component api services-----------------------------------------------
-  adduser(doc:any){
+  addUser(doc:any){
     console.log(doc);
-    return this.http.post('http://localhost:8000/postuser/',doc);
+    return this.http.post('http://localhost:8000/postUser/',doc);
   }
 
-  getuserdata(): Observable<{}> {
-    return this.http.get('http://localhost:8000/getuser/');
+  getUserData(): Observable<{}> {
+    return this.http.get('http://localhost:8000/getUser/');
   }
-  getalluserdata(id:any): Observable<{}> {
-    return this.http.get(`http://localhost:8000/getuser/${id}`);
+  getAllUserData(id:any): Observable<{}> {
+    return this.http.get(`http://localhost:8000/getUser/${id}`);
   }
   
-  deleteuser(id:any,id1:any){
-    return this.http.delete(`http://localhost:8000/deleteuser/${id}/${id1}`);
+  deleteUser(id:any,id1:any){
+    return this.http.delete(`http://localhost:8000/deleteUser/${id}/${id1}`);
   }
-  updateuser(doc:any){
+  updateUser(doc:any){
     console.log(doc);
-    return this.http.put('http://localhost:8000/updateuser/',doc);
+    return this.http.put('http://localhost:8000/updateUser/',doc);
   }
   //------------------------------------------------------------------------------
 
   //Add Driver Component Api Services--------------------------------------------
 
-  adddriverdata(doc:any){
+  addDriverData(doc:any){
     console.log(doc);
-    return this.http.post('http://localhost:8000/postdriver/',doc);
+    return this.http.post('http://localhost:8000/postDriver/',doc);
   }
 
-  getdriverdata(): Observable<{}> {
-    return this.http.get('http://localhost:8000/getdriver/');
+  getDriverData(): Observable<{}> {
+    return this.http.get('http://localhost:8000/getDriver/');
   }
-  getalldriverdata(id:any): Observable<{}> {
-    return this.http.get(`http://localhost:8000/getdriver/${id}`);
+  getAllDriverData(id:any): Observable<{}> {
+    return this.http.get(`http://localhost:8000/getDriver/${id}`);
   }
   
-  deletedriverdata(id:any,id1:any){
-    return this.http.delete(`http://localhost:8000/deletedriver/${id}/${id1}`);
+  deleteDriverData(id:any,id1:any){
+    return this.http.delete(`http://localhost:8000/deleteDriver/${id}/${id1}`);
   }
-  updatedriverdata(doc:any){
+  updateDriverData(doc:any){
     console.log(doc);
-    return this.http.put('http://localhost:8000/updatedriver/',doc);
+    return this.http.put('http://localhost:8000/updateDriver/',doc);
   }
 
   //------------------------------------------------------------------------------
  
   //Add Vehicle Component Api Services--------------------------------------------
 
-  addvehicledata(doc:any){
+  addVehicleData(doc:any){
     console.log(doc);
-    return this.http.post('http://localhost:8000/postvehicle/',doc);
+    return this.http.post('http://localhost:8000/postVehicle/',doc);
   }
 
-  getvehicledata(): Observable<{}> {
-    return this.http.get('http://localhost:8000/getvehicle/');
+  getVehicleData(): Observable<{}> {
+    return this.http.get('http://localhost:8000/getVehicle/');
   }
-  getallvehicledata(id:any): Observable<{}> {
-    return this.http.get(`http://localhost:8000/getvehicle/${id}`);
+  getAllVehicleData(id:any): Observable<{}> {
+    return this.http.get(`http://localhost:8000/getVehicle/${id}`);
   }
   
-  deletevehicledata(id:any,id1:any){
-    return this.http.delete(`http://localhost:8000/deletevehicle/${id}/${id1}`);
+  deleteVehicleData(id:any,id1:any){
+    return this.http.delete(`http://localhost:8000/deleteVehicle/${id}/${id1}`);
   }
-  updatevehicledata(doc:any){
+  updateVehicleData(doc:any){
     console.log(doc);
-    return this.http.put('http://localhost:8000/updatevehicle/',doc);
+    return this.http.put('http://localhost:8000/updateVehicle/',doc);
   }
 
   //------------------------------------------------------------------------------
@@ -83,24 +83,24 @@ export class ApiService {
 
   //Add Insurance Component Api Services--------------------------------------------
 
-  addfueldata(doc:any){
+  addFuelData(doc:any){
     console.log(doc);
-    return this.http.post('http://localhost:8000/postfuel/',doc);
+    return this.http.post('http://localhost:8000/postFuel/',doc);
   }
 
-  getfuledata(): Observable<{}> {
-    return this.http.get('http://localhost:8000/getfuel/');
+  getFuleData(): Observable<{}> {
+    return this.http.get('http://localhost:8000/getFuel/');
   }
-  getallfueldata(id:any): Observable<{}> {
-    return this.http.get(`http://localhost:8000/getfuel/${id}`);
+  getAllFuelData(id:any): Observable<{}> {
+    return this.http.get(`http://localhost:8000/getFuel/${id}`);
   }
   
-  deletefueldata(id:any,id1:any){
-    return this.http.delete(`http://localhost:8000/deletefuel/${id}/${id1}`);
+  deleteFuelData(id:any,id1:any){
+    return this.http.delete(`http://localhost:8000/deleteFuel/${id}/${id1}`);
   }
-  updatefueldata(doc:any){
+  updateFuelData(doc:any){
     console.log(doc);
-    return this.http.put('http://localhost:8000/updatefuel/',doc);
+    return this.http.put('http://localhost:8000/updateFuel/',doc);
   }
 
   //------------------------------------------------------------------------------
@@ -108,24 +108,24 @@ export class ApiService {
 
   //Add Insurance Component Api Services--------------------------------------------
 
-  addinsurancedata(doc:any){
+  addInsuranceData(doc:any){
     console.log(doc);
-    return this.http.post('http://localhost:8000/postinsurance/',doc);
+    return this.http.post('http://localhost:8000/postInsurance/',doc);
   }
 
-  getinsurancedata(): Observable<{}> {
-    return this.http.get('http://localhost:8000/getinsurance/');
+  getInsuranceData(): Observable<{}> {
+    return this.http.get('http://localhost:8000/getInsurance/');
   }
-  getallinsurancedata(id:any): Observable<{}> {
-    return this.http.get(`http://localhost:8000/getinsurance/${id}`);
+  getAllInsuranceData(id:any): Observable<{}> {
+    return this.http.get(`http://localhost:8000/getInsurance/${id}`);
   }
   
-  deleteinsurancedata(id:any,id1:any){
-    return this.http.delete(`http://localhost:8000/deleteinsurance/${id}/${id1}`);
+  deleteInsuranceData(id:any,id1:any){
+    return this.http.delete(`http://localhost:8000/deleteInsurance/${id}/${id1}`);
   }
-  updateinsurancedata(doc:any){
+  updateInsuranceData(doc:any){
     console.log(doc);
-    return this.http.put('http://localhost:8000/updateinsurance/',doc);
+    return this.http.put('http://localhost:8000/updateInsurance/',doc);
   }
 
   //------------------------------------------------------------------------------
@@ -133,24 +133,24 @@ export class ApiService {
 
   //Add Maintanence Component Api Services--------------------------------------------
 
-  addmaintanencedata(doc:any){
+  addMaintanenceData(doc:any){
     console.log(doc);
-    return this.http.post('http://localhost:8000/postmaintanence/',doc);
+    return this.http.post('http://localhost:8000/postMaintanence/',doc);
   }
 
-  getmaintanencedata(): Observable<{}> {
-    return this.http.get('http://localhost:8000/getmaintanence/');
+  getMaintanenceData(): Observable<{}> {
+    return this.http.get('http://localhost:8000/getMaintanence/');
   }
-  getallmaintanencedata(id:any): Observable<{}> {
-    return this.http.get(`http://localhost:8000/getmaintanence/${id}`);
+  getAllMaintanenceData(id:any): Observable<{}> {
+    return this.http.get(`http://localhost:8000/getMaintanence/${id}`);
   }
   
-  deletemaintanencedata(id:any,id1:any){
-    return this.http.delete(`http://localhost:8000/deletemaintanence/${id}/${id1}`);
+  deleteMaintanenceData(id:any,id1:any){
+    return this.http.delete(`http://localhost:8000/deleteMaintanence/${id}/${id1}`);
   }
-  updatemaintanencedata(doc:any){
+  updateMaintanenceData(doc:any){
     console.log(doc);
-    return this.http.put('http://localhost:8000/updatemaintanence/',doc);
+    return this.http.put('http://localhost:8000/updateMaintanence/',doc);
   }
 
   //------------------------------------------------------------------------------

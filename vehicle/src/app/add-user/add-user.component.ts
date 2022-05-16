@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators,FormBuilder, NgForm } from '@angular/forms';
 import { ApiService } from '../service/api.service';
+import { SharedserviceService } from '../service/sharedservice.service';
 
 
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.css']
+  styleUrls: ['./add-user.component.css'],
+  providers:[SharedserviceService]
 })
 export class AddUserComponent implements OnInit {
   hide=true;
@@ -15,8 +17,11 @@ export class AddUserComponent implements OnInit {
   store:any=[];
   showAdd!:boolean;
   showUpdate!:boolean;
+  // searchText:any;
+  input:any;
+   filter:any; table:any; tr:any; td:any; i:any; txtValue:any;
   
-  constructor(private formbuilder:FormBuilder,private api:ApiService) { }
+  constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
     this.userform=this.formbuilder.group({
@@ -41,7 +46,7 @@ export class AddUserComponent implements OnInit {
   
   adduser(formvalue:NgForm){
       console.log(formvalue);
-      this.api.adduser(formvalue).subscribe(res=>{
+      this.api.addUser(formvalue).subscribe(res=>{
       console.log("hello");
       alert("Your data was posted successfully!");
       this.userform.reset();
@@ -54,7 +59,7 @@ export class AddUserComponent implements OnInit {
     });
   }
   getuser(){
-    this.api.getuserdata().subscribe(res=>{
+    this.api.getUserData().subscribe(res=>{
       console.log(res);
       console.log("response is comming");
       this.alluser=res;
@@ -64,14 +69,13 @@ export class AddUserComponent implements OnInit {
             if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
               const element = this.alluser[key];
               console.log(element.id);
-              this.api.getalluserdata(element.id).subscribe(res=>{
+              this.api.getAllUserData(element.id).subscribe(res=>{
                 console.log(res);
                 this.store.push(res);
                 console.log("data is came");
               },rej=>{
                 console.log("error"+rej);
               })
-            
             }
           }
     },rej=>{
@@ -83,7 +87,7 @@ export class AddUserComponent implements OnInit {
     console.log("delete called"+data._id);
     console.log("delete called"+data1._rev);
 
-    this.api.deleteuser(data._id,data1._rev).subscribe(res=>{
+    this.api.deleteUser(data._id,data1._rev).subscribe(res=>{
       console.log("delete response get");
       console.log(res);
       alert("your data has deleted, please refresh the page");
@@ -111,7 +115,7 @@ export class AddUserComponent implements OnInit {
 
   update(formvalue:NgForm){
     console.log(formvalue);
-    this.api.updateuser(formvalue).subscribe(res=>{
+    this.api.updateUser(formvalue).subscribe(res=>{
       console.log("update success");
       console.log(res);
       alert("Your data was updated successfully!");
@@ -125,6 +129,7 @@ export class AddUserComponent implements OnInit {
     })
 
   }
+  
 
 }
 

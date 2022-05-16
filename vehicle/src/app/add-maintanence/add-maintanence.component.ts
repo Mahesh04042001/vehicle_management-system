@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup,FormBuilder, NgForm } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { ApiService } from '../service/api.service';
+import { SharedserviceService } from '../service/sharedservice.service';
 
 @Component({
   selector: 'app-add-maintanence',
   templateUrl: './add-maintanence.component.html',
-  styleUrls: ['./add-maintanence.component.css']
+  styleUrls: ['./add-maintanence.component.css'],
+  providers:[SharedserviceService]
 })
 export class AddMaintanenceComponent implements OnInit {
   maintanenceform!:FormGroup;
@@ -14,7 +16,7 @@ export class AddMaintanenceComponent implements OnInit {
   store:any=[];
   showAdd!:boolean;
   showUpdate!:boolean;
-  constructor(private formbuilder:FormBuilder,private api:ApiService) { }
+  constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
     this.maintanenceform=this.formbuilder.group({
@@ -37,7 +39,7 @@ export class AddMaintanenceComponent implements OnInit {
   
   adduser(formvalue:NgForm){
       console.log(formvalue);
-      this.api.addmaintanencedata(formvalue).subscribe(res=>{
+      this.api.addMaintanenceData(formvalue).subscribe(res=>{
       console.log("hello");
       alert("Your data was posted successfully!");
       this.maintanenceform.reset();
@@ -50,7 +52,7 @@ export class AddMaintanenceComponent implements OnInit {
     });
   }
   getuser(){
-    this.api.getmaintanencedata().subscribe(res=>{
+    this.api.getMaintanenceData().subscribe(res=>{
       console.log(res);
       console.log("response is comming");
       this.alluser=res;
@@ -60,7 +62,7 @@ export class AddMaintanenceComponent implements OnInit {
             if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
               const element = this.alluser[key];
               console.log(element.id);
-              this.api.getallmaintanencedata(element.id).subscribe(res=>{
+              this.api.getAllMaintanenceData(element.id).subscribe(res=>{
                 console.log(res);
                 this.store.push(res);
                 console.log("data is came");
@@ -79,7 +81,7 @@ export class AddMaintanenceComponent implements OnInit {
     console.log("delete called"+data._id);
     console.log("delete called"+data1._rev);
 
-    this.api.deletemaintanencedata(data._id,data1._rev).subscribe(res=>{
+    this.api.deleteMaintanenceData(data._id,data1._rev).subscribe(res=>{
       console.log("delete response get");
       console.log(res);
       alert("your data has deleted, please refresh the page");
@@ -104,7 +106,7 @@ export class AddMaintanenceComponent implements OnInit {
 
   update(formvalue:NgForm){
     console.log(formvalue);
-    this.api.updatemaintanencedata(formvalue).subscribe(res=>{
+    this.api.updateMaintanenceData(formvalue).subscribe(res=>{
       console.log("update success");
       console.log(res);
       alert("Your data was updated successfully!");

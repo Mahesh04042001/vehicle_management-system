@@ -1,11 +1,18 @@
+<mat-form-field appearance="standard" class="searchBar">
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="search text with any keyword" name="search" [(ngModel)]="this.share.searchText">
+</mat-form-field>
+<!-- <input type="text"  placeholder="Enter name to search" autocomplete="off"> -->
+
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
     (click)="showOrHide()">
     Add User
-</button><br><br>
+</button>
+
 
 <table class="table">
-    <thead>
+    <thead class="myTable">
         <tr>
             <th scope="col">Name</th>
             <th scope="col">User Name</th>
@@ -17,7 +24,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of store">
+        <tr *ngFor="let user of store | filter:this.share.searchText">
 
             <td>{{user.name}}</td>
             <td>{{user.username}}</td>
@@ -26,7 +33,7 @@
             <td>{{user.city}}</td>
             <td>{{user.state}}</td>
             <td>
-                <button type="button" (click)="onEdit(user)" class="btn btn-primary" data-bs-toggle="modal"
+                <button type="button" (click)="onEdit(user)" class="btn btn-warning" data-bs-toggle="modal"
                     data-bs-target="#exampleModal">
                     Edit
                 </button>&nbsp;&nbsp;
