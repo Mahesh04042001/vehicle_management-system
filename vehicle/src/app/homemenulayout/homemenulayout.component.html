@@ -1,39 +1,40 @@
-<nav class="navbar navbar-dark bg-primary">
+<nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-        <i style="font-size: 40px;" class="fas fa-shipping-fast">
+        <i style="font-size: 40px;margin-left: 20px;" class="fas fa-shipping-fast">
         </i>
-        <h1 class="text-light">Vehicle Management</h1>
+        <h1 class="vms-heading">Vehicle Management</h1>
         <div class="d-flex">
-            <li><a routerLink="/home">Home</a></li>
-            <li><a routerLink="/aboutus">About Us</a></li>
-            <li><a routerLink="/contactus">Contact Us</a></li>
-            <li><a routerLink="login" routerLinkActive="text-danger">Log In</a></li>
+            <li class="nav-list">
+                <a routerLink="/home" routerLinkActive="active">Home</a>
+            </li>
+            <li class="nav-list">
+                <a routerLink="/aboutus" routerLinkActive="active">About Us</a>
+            </li>
+            <div class="dropdown">
+                <a class="admin" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Administration
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item " routerLink="/adduser">Add New System User</a></li>
+                    <li><a class="dropdown-item" routerLink="/adddriver">Add New Driver</a></li>
+                    <li><a class="dropdown-item" routerLink="/addvehicle">Add New Vehicle</a></li>
+                    <li><a class="dropdown-item" routerLink="/addfuel">Add Fuel</a></li>
+                    <li><a class="dropdown-item" routerLink="/addmaintain">Add Maintanence</a></li>
+                    <li><a class="dropdown-item" routerLink="/addinsurance">Add Insurance</a></li>
+                    <li><a class="dropdown-item" routerLink="/report">Report</a></li>
+                    <li><a class="dropdown-item" routerLink="/dash_board">Dashboard</a></li>
+                </ul>
+            </div>
+            <li>
+                <a routerLink="/contactus" class="nav-list" style="margin-left: 85px;" routerLinkActive="active">Contact
+                    Us
+                </a>
+            </li>
+            <li>
+                <a routerLink="/login" (click)='logout()' class="nav-list">Logout
+                </a>
+            </li>
         </div>
+
     </div>
 </nav>
-<!-- <router-outlet></router-outlet> -->
-<!-- <mat-nav-list>
-    <div class="logo py-4">
-        <img alt="logo">
-    </div>
-    <mat-divider></mat-divider>
-    <h2 matsubheader>APPLICATION</h2>
-    <a mat-list-item routerLink="/home" routerLinkActive="list-item-active" class="link">
-        <mat-icon>home</mat-icon>Home
-    </a>
-    <a mat-list-item routerLink="/addmaintain" routerLinkActive="list-item-active" class="link">
-        <mat-icon>dashboard</mat-icon>Dashboard
-    </a>
-    <a mat-list-item class="link">
-        <mat-icon>edit</mat-icon>Link 1
-    </a>
-    <a mat-list-item class="link">
-        <mat-icon>edit</mat-icon>Link 2
-    </a>
-    <a mat-list-item class="link">
-        <mat-icon>edit</mat-icon>Link 3
-    </a>
-    <a mat-list-item class="link">
-        <mat-icon>edit</mat-icon>Link 4
-    </a>
-</mat-nav-list> -->

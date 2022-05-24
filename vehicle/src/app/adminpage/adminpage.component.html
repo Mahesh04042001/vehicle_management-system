@@ -2,7 +2,9 @@
     <div class="container-fluid">
         <i style="font-size: 40px;" class="fas fa-shipping-fast">
         </i>
-        <h1 class="text-light">Vehicle Management</h1>
+        <h1 class="text-light">
+            Vehicle Management
+        </h1>
         <div class="d-flex">
             <div class="dropdown">
                 <button class="bg-primary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
@@ -10,55 +12,29 @@
                     Administration
                 </button>
                 <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" routerLink="/adduser">Add New System User</a></li>
-                    <li><a class="dropdown-item" routerLink="/adddriver">Add New Driver</a></li>
-                    <li><a class="dropdown-item" routerLink="/addvehicle">Add New Vehicle</a></li>
-                    <li><a class="dropdown-item" routerLink="/addfuel">Add Fuel</a></li>
-                    <li><a class="dropdown-item" routerLink="/addmaintain">Add Maintanence</a></li>
-                    <li><a class="dropdown-item" routerLink="/addinsurance">Add Insurance</a></li>
-
+                    <li>
+                        <a class="dropdown-item" routerLink="/adduser">Add New System User</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/adddriver">Add New Driver</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/addvehicle">Add New Vehicle</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/addfuel">Add Fuel</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/addmaintain">Add Maintanence</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/addinsurance">Add Insurance</a>
+                    </li>
                 </ul>
             </div>
-            <div class="dropdown">
-                <button class="bg-primary" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Report
-                </button>
-                <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton">
-                    <li class="list"><a class="dropdown-item" href="#">Action</a></li>
-                    <li class="list"><a class="dropdown-item" href="#">Another action</a></li>
-                    <li class="list"><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-            </div>
-            <li><a>My Account</a></li>
-            <li><a>Change Password</a></li>
-            <li><a routerLink="/home">Logout</a></li>
+            <li>
+                <a routerLink="/home">Logout</a>
+            </li>
         </div>
     </div>
 </nav>
-<router-outlet></router-outlet>
-
-<!-- <mat-toolbar>
-    <mat-toolbar-row class="justify-content-between">
-        <button mat-icon-button (click)="toggleSidebar()">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <div class="row mr-2 ml-auto">
-            <ul>
-                <li>
-                    <button mat-button class="user mt-2 d-flex align-item-center">
-                        <img src="" alt="user" class="user-image mr-1 p-2">
-                        User Name
-                        <mat-icon class="user-image-icon ml-1">keyboard_arrow_down</mat-icon>
-                    </button>
-                    <mat-menu menu="matMenu">
-                        <button mat-menu-item>
-                            <mat-icon>eixt_to_app</mat-icon>
-                            Logout
-                        </button>
-                    </mat-menu>
-                </li>
-            </ul>
-        </div>
-    </mat-toolbar-row>
-</mat-toolbar> -->

@@ -1,13 +1,9 @@
-<!-- <app-homemenulayout></app-homemenulayout> -->
+<!-- <app-homemenulayout *ngIf="this.show.showTag"></app-homemenulayout> -->
+<app-homemenulayout></app-homemenulayout>
+<!-- <app-report-check></app-report-check> -->
 <!-- <app-adminpage></app-adminpage> -->
-<router-outlet></router-outlet>
+<router-outlet>
+    <!-- <app-add-insurance></app-add-insurance> -->
+    <!-- <app-dashboard></app-dashboard> -->
 
-<!-- <mat-drawer-container class="example-container">
-    <mat-drawer mode="side" [opened]="sideBarOpen">
-        <app-homemenulayout></app-homemenulayout>
-    </mat-drawer>
-    <mat-drawer-content>
-        <app-adminpage (toggleSidebarforMe)="sideBarToggler()"></app-adminpage>
-        <router-outlet></router-outlet>
-    </mat-drawer-content>
-</mat-drawer-container> -->
+</router-outlet>

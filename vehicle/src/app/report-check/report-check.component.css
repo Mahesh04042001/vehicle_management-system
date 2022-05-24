@@ -1,0 +1,22 @@
+.text-warning{
+    margin: 40px;
+}
+.reportTable{
+    margin-top: 40px;
+}
+.reportTable tr, td{
+    width: 80px;
+    margin-left: 100px;
+    text-align: center;
+    color:white;
+    font-size:16px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    background-color: rgb(48, 132, 184);
+}
+thead th{
+    background-color: black;
+}
+td,th{
+    border: 1px solid white;
+}

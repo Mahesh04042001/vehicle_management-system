@@ -1,24 +1,23 @@
-/* .page{
-    color: white;
-    padding: 0 1rem;
-    background: #f1f5f9;
+.container{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 900px;
 }
-.page__box{
-    min-height: 120px;
-    background-color: #1e293b;
-    margin: 0 -1rem;
-    font-size: 36px;
+.container h1{
+    font-size:45px;
+    font-weight: bold;
 }
-.page__content{
-    min-height: calc(100vh - 160px);
-    border-radius: 10px;
-    margin-top: -2rem;
-    background: white;
-    color: black;
-    font-size: -2rem;
+.heading h1{
+    color: rgb(8, 8, 81);
+    margin-bottom: 40px;
 }
-.page__content-data{
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-} */
+.vms_para{
+    color: rgb(39, 39, 97);
+    font-size: 20px;
+    margin-top: -20px;
+}
+.banner_img_part{
+    margin-top: -40px;
+}

@@ -9,7 +9,7 @@
     width: 500px;
 }
 .card h1,h6{
-color: white;
+    color: white;
 }
 label{
     color: white;
@@ -19,6 +19,6 @@ button{
     margin-top: 10%;
 }
 a{
-    text-decoration: none;
     color: white;
+    text-decoration: none;
 }

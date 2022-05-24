@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../service/api.service';
+import { SharedserviceService } from '../service/sharedservice.service';
 
 @Component({
   selector: 'app-log-in',
@@ -15,7 +16,7 @@ export class LogInComponent implements OnInit {
   alluser!:any;
   store:any=[];
   logIncheck:any=0;
-  constructor(private formbuilder:FormBuilder,private api:ApiService,private route:Router) { }
+  constructor(private formbuilder:FormBuilder,private api:ApiService,private route:Router,private show:SharedserviceService) { }
 
   ngOnInit(): void {
     this.loginform=this.formbuilder.group({
@@ -23,57 +24,36 @@ export class LogInComponent implements OnInit {
         password:['',Validators.required]
     })
   }
+
+  
+  //Login check function
   login(formvalue:any){
-      this.api.getUserData().subscribe(res=>{
-      // console.log(res);
-      // console.log("response is comming");
+    this.api.getUserData().subscribe(res=>{
       this.alluser=res;
       this.alluser=this.alluser.rows;
-      // console.log(this.alluser);
       for (const key in this.alluser) {
-            if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-              const element = this.alluser[key];
-              // console.log(element.id);
-              this.api.getAllUserData(element.id).subscribe(res=>{
-                // console.log(res);
-                this.store.push(res);
-                // console.log("data is came");
-                for (const iterator of this.store) {
-                  // console.log(iterator.username);
-                  if(iterator.username==formvalue.username){
-                    this.logIncheck=1;
-                    // console.log(this.logIncheck);
-                    // console.log("hi");
-                  }
-                }
-                
-              })
-            
+        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
+          const element = this.alluser[key];
+          this.api.getAllUserData(element.id).subscribe(res=>{
+            this.store.push(res);
+            for (const iterator of this.store) {
+              if(iterator.username==formvalue.username && iterator.password==formvalue.password){
+                this.logIncheck=1;
+              }
             }
+          })
+        }
       }
       setTimeout(()=>{
-        // console.log("outside"+this.logIncheck);
         if(this.logIncheck==1){
-          // alert("You have logged in successfully");
-          this.route.navigate(['/menu']);
+          this.show.showTag=true;
+          this.route.navigate(['/home']);
         }else{
           alert("Your account does not exist!");
           this.route.navigate(['/login']);
+          this.loginform.reset();
         }
       },500);
-      
-
     })
-    // if(this.logIncheck===1){
-    //   console.log("you have successfully logged in");
-    // }else{
-    //   alert("you can not logged in");
-    // }
-    console.log(formvalue);
-    console.log(this.store);
-    console.log("end");
-  
-  
   }
-
 }

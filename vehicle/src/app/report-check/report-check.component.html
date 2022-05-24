@@ -1,0 +1,70 @@
+<div class="container">
+    <div>
+        <h5 class="text-warning">NOTE:* Please ensure your vehicle data are in all four forms table to display the
+            related
+            details
+            such as driver form,vehicle form,
+            fuel form,maintanence form,insurance form</h5>
+    </div>
+    <form [formGroup]="reportForm">
+        <div>
+            <label for="vinNumber" class="form-label">
+                <h5>Select Vehicle Number In Dropdown Box:</h5>
+            </label>
+            <select class="drobdown" type="text" id="vinNumber" (change)=displayTable($event) class="form-control"
+                formControlName="vinNumber">
+                <option value="0">Please Select One</option>
+                <option *ngFor="let user of storeDrobdownObj" [value]="user._id">
+                    {{user.vehiclenumber}}{{user.vahicletype}}
+                </option>
+            </select>
+            <span class="text-danger"
+                *ngIf="reportForm.controls['vinNumber'].dirty && reportForm.hasError('required','vinNumber')">*Dropdown
+                box must be filled
+                is required!!
+            </span>
+        </div>
+    </form>
+</div>
+<table class="reportTable">
+    <thead>
+        <tr>
+            <th scope="col">Driver Name</th>
+            <th scope="col">Vehicle Number</th>
+            <th scope="col">Vehicle type</th>
+            <th scope="col">Vehicle Color</th>
+            <th scope="col">Registration Date</th>
+            <th scope="col">Chasis No</th>
+            <th scope="col">Vehicle Cost</th>
+            <th scope="col">Quantity(litre)</th>
+            <th scope="col">Filling Date</th>
+            <th scope="col">Fuel Cost</th>
+            <th scope="col">Maintanence Date</th>
+            <th scope="col">Maintanence Cost</th>
+            <th scope="col">Insurance Company</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Insurance Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of storeTableData">
+            <td>{{data.drivername}}</td>
+            <td>{{data.vehiclenumber}}</td>
+            <td>{{data.vehicletype}}</td>
+            <td>{{data.vehiclecolor}}</td>
+            <td>{{data.registrationdate | date:'dd/MM/YYYY'}}</td>
+            <td>{{data.chasisno}}</td>
+            <td>{{data.vehiclecost}}</td>
+            <td>{{data.quantity}}</td>
+            <td>{{data.fillingdate | date:'dd/MM/YYYY'}}</td>
+            <td>{{data.fuelcost}}</td>
+            <td>{{data.maintanencedate | date:'dd/MM/YYYY'}}</td>
+            <td>{{data.maintanencecost}}</td>
+            <td>{{data.insurancecompany}}</td>
+            <td>{{data.startdate | date:'dd/MM/YYYY'}}</td>
+            <td>{{data.enddate | date:'dd/MM/YYYY'}}</td>
+            <td>{{data.insurancecost}}</td>
+        </tr>
+    </tbody>
+</table>

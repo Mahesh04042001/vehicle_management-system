@@ -10,7 +10,7 @@
 </button><br><br>
 
 <table class="table">
-    <thead>
+    <thead class="myTable">
         <tr>
             <th scope="col">Vehicle Number</th>
             <th scope="col">Vehicle Type</th>
@@ -29,7 +29,7 @@
             <td>{{user.vehicletype}}</td>
             <td>{{user.drivername}}</td>
             <td>{{user.color}}</td>
-            <td>{{user.registerdate}}</td>
+            <td>{{user.registerdate | date:'dd/MM/YYYY'}}</td>
             <td>{{user.chasisno}}</td>
             <td>{{user.cost}}</td>
             <td>
@@ -37,8 +37,8 @@
                     data-bs-target="#exampleModal">
                     Edit
                 </button>&nbsp;&nbsp;
-                <button type="button" (click)="delete(user,user)" class=" btn btn-primary"
-                    data-bs-target="#exampleModal" style="background-color: red;">
+                <button type="button" (click)="delete(user)" class=" btn btn-primary" data-bs-target="#exampleModal"
+                    style="background-color: red;">
                     Remove
                 </button><br><br>
             </td>
@@ -55,7 +55,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="vehicleform" (ngSubmit)="adduser(this.vehicleform.value)">
+                <form [formGroup]="vehicleform">
                     <div>
                         <label for="vehiclenumber" class="form-label">Vehicle Number</label>
                         <input type="text" class="form-control" id="vehiclenumber" formControlName="vehiclenumber">
@@ -89,8 +89,7 @@
                     </div>
                     <div>
                         <label for="registerdate" class="form-label">Registration Date</label>
-                        <input type="registerdate" class="form-control" id="registerdate"
-                            formControlName="registerdate">
+                        <input type="date" class="form-control" id="registerdate" formControlName="registerdate">
                         <span class="text-danger"
                             *ngIf="vehicleform.controls['registerdate'].dirty && vehicleform.hasError('required','registerdate')">*Registration
                             date
@@ -115,8 +114,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="cancel" class="btn btn-primary" [disabled]="!vehicleform.valid"
-                    *ngIf="showAdd" (click)="adduser(this.vehicleform.value)">Add</button>
+                <button type="button" class="btn btn-primary" [disabled]="!vehicleform.valid" *ngIf="showAdd"
+                    (click)="vehicleCheck(this.vehicleform.value)">Add</button>
                 <button type="button" id="cancel" class="btn btn-primary" [disabled]="!vehicleform.valid"
                     (click)="update(this.vehicleform.value)" *ngIf="showUpdate">Update</button>
             </div>

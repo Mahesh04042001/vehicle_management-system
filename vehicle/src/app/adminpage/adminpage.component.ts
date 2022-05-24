@@ -7,13 +7,8 @@ import { ApiService } from '../service/api.service';
   styleUrls: ['./adminpage.component.css']
 })
 export class AdminpageComponent implements OnInit {
-// @Output() toggleSidebarforMe:EventEmitter<any>=new EventEmitter()
   constructor(private api:ApiService) { }
 
   ngOnInit(): void {
   }
-  // toggleSidebar(){
-  //   this.toggleSidebarforMe.emit();
-  // }
-
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import{HttpClient,HttpHeaders} from '@angular/common/http';
+import{HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -81,7 +81,7 @@ export class ApiService {
   //------------------------------------------------------------------------------
 
 
-  //Add Insurance Component Api Services--------------------------------------------
+  //Add Fuel Component Api Services--------------------------------------------
 
   addFuelData(doc:any){
     console.log(doc);
@@ -154,5 +154,9 @@ export class ApiService {
   }
 
   //------------------------------------------------------------------------------
+
+  // getAll(){
+
+  // }
 
 }

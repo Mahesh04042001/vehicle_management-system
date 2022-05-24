@@ -1,8 +1,3 @@
-<!-- <h1>Create Account</h1>
-User name:<input type="text" placeholder="Enter your name"><br><br>
-Password: <input type="password"><br><br>
-<button>Submit</button>
-<button>Reset</button> -->
 <div class="container">
     <div class="row">
         <div>
@@ -18,18 +13,24 @@ Password: <input type="password"><br><br>
                             aria-describedby="emailHelp">
                         <span class="text-danger"
                             *ngIf="loginform.controls['username'].dirty && loginform.hasError('required','username')">*Username
-                            is required!!</span>
+                            is required!!
+                        </span>
                     </div>
                     <div class="mb-3" class="form-group">
-                        <label for="Password" class="form-label">Password</label>
+                        <label for="Password" class="form-label">Password
+                        </label>
                         <input type="password" class="form-control" id="Password" formControlName="password">
                         <span class="text-danger"
                             *ngIf="loginform.controls['password'].dirty && loginform.hasError('required','password')">*Username
-                            is required!!</span>
+                            is required!!
+                        </span>
                     </div>
-                    <div id="username" class="form-text">We'll never share your credentials.</div>
-                    <button type="submit" class="btn btn-primary"><a
-                            (click)="login(this.loginform.value)">Login</a></button>
+                    <div class="form-text">
+                        We'll never share your credentials.
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <a (click)="login(this.loginform.value)">Login</a>
+                    </button>
                 </form>
             </div>
         </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../service/api.service';
+import { SharedserviceService } from '../service/sharedservice.service';
 
 @Component({
   selector: 'app-homemenulayout',
@@ -8,17 +10,15 @@ import { ApiService } from '../service/api.service';
 })
 export class HomemenulayoutComponent implements OnInit {
 
-  getbool:any=true;
-  constructor(public api:ApiService) { }
+  constructor(public api:ApiService,private share:SharedserviceService,private route:Router) { }
 
   ngOnInit(): void {
   
   }
-  // onGenerate(getbool:any){
-  //   this.getbool=getbool;
-  //   console.log(this.getbool);
-
-  // }
+  logout(){
+    this.share.showTag=false;
+    this.route.navigate(['/login']);
+  }
 
 
 }

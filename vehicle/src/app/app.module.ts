@@ -5,7 +5,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { AboutUsComponent } from './about-us/about-us.component';
+import { AboutProductComponent } from './about-product/about-product.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FirstmenuComponent } from './firstmenu/firstmenu.component';
@@ -34,12 +34,14 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
 import {MatDividerModule} from '@angular/material/divider';
+import { ReportCheckComponent } from './report-check/report-check.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    AboutUsComponent,
+    AboutProductComponent,
     LogInComponent,
     ContactUsComponent,
     FirstmenuComponent,
@@ -51,6 +53,8 @@ import {MatDividerModule} from '@angular/material/divider';
     AddInsuranceComponent,
     HomemenulayoutComponent,
     AdminpageComponent,
+    ReportCheckComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

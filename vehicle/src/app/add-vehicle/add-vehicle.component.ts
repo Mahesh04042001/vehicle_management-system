@@ -32,71 +32,68 @@ export class AddVehicleComponent implements OnInit {
       _id:[''],
       _rev:[''],
     })
-    this.getuser();
-
+    this.get();
   }
+
+  //This functioin is used when add
   showOrHide(){
     this.vehicleform.reset();
     this.showAdd=true;
     this.showUpdate=false;
   }
   
-  adduser(formvalue:NgForm){
-      console.log(formvalue);
+//Add function to add form value
+
+  add(formvalue: any){
       this.api.addVehicleData(formvalue).subscribe(res=>{
-      console.log("hello");
-      alert("Your data was posted successfully!");
-      this.vehicleform.reset();
-      let cancel=document.getElementById("cancel");
-      cancel?.click();
-      this.store=[];
-      this.getuser();
-    },rej=>{
-      alert("opps! Can not post data"+rej);
-    });
+        this.get();
+        alert("Your data was posted successfully!");
+        this.vehicleform.reset();
+        let cancel=document.getElementById("cancel");
+        cancel?.click();
+      },rej=>{
+        alert("opps! Can not post data"+rej);
+      });
+      // this.store=[];
   }
-  getuser(){
+
+//To get all data from database to show in table
+  
+  get(){
     this.api.getVehicleData().subscribe(res=>{
-      console.log(res);
       console.log("response is comming");
       this.alluser=res;
       this.alluser=this.alluser.rows;
-      console.log(this.alluser);
       for (const key in this.alluser) {
-            if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-              const element = this.alluser[key];
-              console.log(element.id);
-              this.api.getAllVehicleData(element.id).subscribe(res=>{
-                console.log(res);
-                this.store.push(res);
-                console.log("data is came");
-              },rej=>{
-                console.log("error"+rej);
-              })
-            
-            }
-          }
+        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
+          const element = this.alluser[key];
+          this.api.getAllVehicleData(element.id).subscribe(res=>{
+            this.store.push(res);
+            },rej=>{
+            console.log("error"+rej);
+          })
+        }
+      }
     },rej=>{
         alert("opps! Somthing went wrong"+rej);
     })
   }
-  
-  delete(data:any,data1:any){
-    console.log("delete called"+data._id);
-    console.log("delete called"+data1._rev);
 
-    this.api.deleteVehicleData(data._id,data1._rev).subscribe(res=>{
-      console.log("delete response get");
+//To delete table row  
+
+  delete(data:any){
+    this.api.deleteVehicleData(data._id,data._rev).subscribe(res=>{
       console.log(res);
       alert("your data has deleted, please refresh the page");
       this.store=[];
-      this.getuser();
+      this.get();
     },rej=>{
       alert("oops can not delete"+rej);
     })
-
   }
-  
+
+//To eset values in table fields  
+
   onEdit(row:any){
     this.showAdd=false;
     this.showUpdate=true;
@@ -111,8 +108,8 @@ export class AddVehicleComponent implements OnInit {
     this.vehicleform.controls['_rev'].setValue(row._rev);
   }
 
+//To update existing form values OR modified existing  
   update(formvalue:NgForm){
-    console.log(formvalue);
     this.api.updateVehicleData(formvalue).subscribe(res=>{
       console.log("update success");
       console.log(res);
@@ -121,12 +118,42 @@ export class AddVehicleComponent implements OnInit {
       let cancel=document.getElementById("cancel");
       cancel?.click();
       this.store=[];
-      this.getuser();
-    },rej=>{
+      this.get();
+      },rej=>{
       console.log("can not update.....");
     })
-
   }
 
+//Vehicle database check using Chasis number
 
+  vehicleCheck(formvalue:any){
+    this.showAdd=false;
+    this.api.getVehicleData().subscribe(res=>{
+      this.alluser=res;
+      this.alluser=this.alluser.rows;
+      for (const key in this.alluser) {
+        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
+          const element = this.alluser[key];
+          this.api.getAllVehicleData(element.id).subscribe(res=>{
+            this.share.storeValidation.push(res);
+            for (const iterator of this.share.storeValidation) {
+              if(iterator.chasisno==formvalue.chasisno || (iterator.vehiclenumber==formvalue.vehiclenumber && iterator.vehicletype==formvalue.vehicletype)){
+                this.share.primaryCheck=1;
+              }
+            }
+          })
+        }
+      }
+      setTimeout(()=>{
+        if(this.share.primaryCheck==1){
+          alert("your vehicle details already exist try new one!");
+          this.store=[];
+          this.get();
+        }else{
+          this.add(formvalue);
+          this.store=[];
+        }
+      },1000);
+    })
+  }
 }

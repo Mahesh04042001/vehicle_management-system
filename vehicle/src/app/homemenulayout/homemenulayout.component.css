@@ -1,54 +1,66 @@
-li a{
+.nav-list, a{
     color:white;
     cursor: pointer;
     font-weight: bold;
-    margin-left: 100px;
+    list-style: none;
+    margin-left: 50px;
     text-decoration: none;
 }
-li{
+.nav-list1{
     list-style: none;
-
 }
-.text-light{
-    margin-left: -250px;
+.vms-heading{
+    color: white;
+    margin-left: -100px;
 }
 .fas{
     color: white;
 }
-
-
-/*--------------------------------------------------------*/
-/* .logo{
-    text-align: center;
-    padding: 2.6rem 1rem;
-    
+a{
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 30px;
+    text-decoration: none;
 }
-img{
-    width:200px;
+.dropdown button{
+    border-style: none;
+    font-weight: bold;
+    font-size: 17px;
 }
-.mat-icon{
-    /* vertical-align: middle;
-    margin-right: 1rem;
-    color: #2c3344;
-
+.dropdown-item{
+    border-bottom: 1px solid black;
+    margin-right: 100px;
 }
-
-mat-divider{
-    border-top-width: 2px;
-    border-color: white;
+.dropdown-menu{
+    width: 200px;
 }
-.mat-list-item{
-    color: #2c3344;
-    font-size: 0.8rem;
-    height: 44px;
-    margin-bottom: 4px;
-    border-radius: 5px;
-    margin: 0 8px;
+.dropdown{
+    margin: 0px 40px;
+    width: 50px;
 }
-.mat-list-item:hover{
+.container-fluid{
+    color: black;
+}
+.navbar{
     background-color: white;
-    color: #0f172a;
+    position: sticky;
+    top:0;
 }
-.list-item-active{
+.dropdown-menu{
+    background-color: black;
+    overflow-x: hidden;
+    width: 250px;
+}
+li a:hover,.admin:hover{
+    background-color: white;
+    border-radius: 12px;
+    color: black;
+    padding: 8px 8px;
+}
+.admin{
     color: white;
-} */
+}
+
+.active{
+    color:rgb(41, 192, 41);
+}

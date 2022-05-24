@@ -1,10 +1,18 @@
 const express = require("express");
+const usercontroller = require("./controllers/usercontroller");
+const driverContoller = require("./controllers/driverController");
+const vehicleController = require("./controllers/vehicleController");
+const fuelController = require("./controllers/fuelControllers");
+const insuranceController = require("./controllers/insuranceControllers");
+const maintanenceController = require("./controllers/maintanenceController");
 const bodyparser = require("body-parser");
 const app = express();
+const logger = require("./config/logger");
+const routing = require("./routes/router");
 const port = 8000;
 const cors = require("cors");
 const dbconnection = require("./connection/db");
-app.use(express.static("public"));
+// const { loggers } = require("winston");
 app.use(bodyparser.json());
 app.use(
   cors({
@@ -14,8 +22,8 @@ app.use(
 
 //User--------------------------------------------------------
 //To post the user data to the database
-app.post("/postuser", (request, response) => {
-  // console.log("hello");
+
+app.post("/postUser", (request, response) => {
   var object = {
     name: request.body.name,
     username: request.body.username,
@@ -25,64 +33,84 @@ app.post("/postuser", (request, response) => {
     city: request.body.city,
     state: request.body.state,
   };
-  dbconnection.insertuser(object).then((res) => {
-    if (res) {
+  usercontroller
+    .userPost(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
   console.log("Data added");
 });
 
 //To get all the _id,_rev... form database
-app.get("/getuser", (request, response) => {
+
+app.get("/getUser", (request, response) => {
   console.log("start");
-  // var store = dbconnection.getuser();
-  dbconnection.getuser().then((res) => {
-    if (res) {
+  usercontroller
+    .userGetId()
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully get list of the user's  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get _id of users data");
+      logger.logger.error("error", `can not get _id of users data ${err}`);
+    });
 });
 
 //To get the all user data value from database
-app.get("/getuser/:id", (request, response) => {
+app.get("/getUser/:id", (request, response) => {
   console.log("getting id from database" + request.params.id);
-  dbconnection.getalluser(request.params.id).then((res) => {
-    if (res) {
-      console.log(res);
+  usercontroller
+    .userGetDetails(request.params.id)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
-
+      logger.logger.log(
+        "info",
+        `successfully get details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
+    });
   console.log("end");
 });
 
 //To delete particular user from database
 
-app.delete("/deleteuser/:id/:id1", (request, response) => {
+app.delete("/deleteUser/:id/:id1", (request, response) => {
   console.log(
     "getting id from id and id2:" + request.params.id + request.params.id1
   );
   console.log("deleting start");
-  dbconnection.deleteuser(request.params.id, request.params.id1).then((res) => {
-    if (res) {
-      console.log("deleted success");
+  usercontroller
+    .userDeleteDetails(request.params.id, request.params.id1)
+    .then((res) => {
       response.send(res);
-    } else {
-      console.log("can not deleted...");
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully delete details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
+    });
 });
 
 // To update the particular user data using id
-app.put("/updateuser", (request, response) => {
+app.put("/updateUser", (request, response) => {
   console.log("hey");
   var object = {
     _id: request.body._id,
@@ -95,22 +123,24 @@ app.put("/updateuser", (request, response) => {
     city: request.body.city,
     state: request.body.state,
   };
-  // console.log(object);
-  dbconnection.updateuser(object).then((res) => {
-    if (res) {
-      console.log("updated....");
+  usercontroller
+    .userUpdateDetails(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      console.log("can not updated....");
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
 });
 
 //Driver-----------------------------------------------------------
 //To post the driver data to the database
-app.post("/postdriver", (request, response) => {
-  // console.log("hello");
+app.post("/postDriver", (request, response) => {
   var object = {
     drivername: request.body.drivername,
     mobile: request.body.mobile,
@@ -119,66 +149,84 @@ app.post("/postdriver", (request, response) => {
     city: request.body.city,
     state: request.body.state,
   };
-  dbconnection.insertdriver(object).then((res) => {
-    if (res) {
+  driverContoller
+    .driverPost(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
   console.log("Data added");
 });
 
 //To get all the driver's  _id,_rev... form database
-app.get("/getdriver", (request, response) => {
+app.get("/getDriver", (request, response) => {
   console.log("start");
-  dbconnection.getdriver().then((res) => {
-    if (res) {
+  driverContoller
+    .driverGetId()
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully get list of the user's  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get _id of users data");
+      logger.logger.error("error", `can not get _id of users data ${err}`);
+    });
 });
 
 //To get the all driver data value from database
-app.get("/getdriver/:id", (request, response) => {
+app.get("/getDriver/:id", (request, response) => {
   console.log("getting id from database" + request.params.id);
-  dbconnection.getalldriver(request.params.id).then((res) => {
-    if (res) {
-      console.log(res);
+  driverContoller
+    .driverGetDetails(request.params.id)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
-
+      logger.logger.log(
+        "info",
+        `successfully get details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
+    });
   console.log("end");
 });
 
 //To delete particular driver from database
 
-app.delete("/deletedriver/:id/:id1", (request, response) => {
+app.delete("/deleteDriver/:id/:id1", (request, response) => {
   console.log("hi");
   console.log(
     "getting id from id and id2:" + request.params.id + request.params.id1
   );
   console.log("deleting start");
-  dbconnection
-    .deletedriver(request.params.id, request.params.id1)
+  driverContoller
+    .driverDeleteDetails(request.params.id, request.params.id1)
     .then((res) => {
-      if (res) {
-        console.log("deleted success");
-        response.send(res);
-      } else {
-        console.log("can not deleted...");
-        response.send("error");
-      }
+      response.send(res);
+      logger.logger.log(
+        "info",
+        `successfully delete details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
     });
 });
 
 // To update the particular driver data using id
-app.put("/updatedriver", (request, response) => {
+app.put("/updateDriver", (request, response) => {
   console.log("hey");
   var object = {
     _id: request.body._id,
@@ -190,23 +238,26 @@ app.put("/updatedriver", (request, response) => {
     city: request.body.city,
     state: request.body.state,
   };
-  dbconnection.updatedriver(object).then((res) => {
-    if (res) {
-      console.log("updated....");
+  driverContoller
+    .driverUpdateDetails(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      console.log("can not updated....");
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
 });
 
 //----------------------------------------------------------------
 
 //Vehicle---------------------------------------------------------
 //To post the vehicle data to the database
-app.post("/postvehicle", (request, response) => {
-  // console.log("hello");
+app.post("/postVehicle", (request, response) => {
   var object = {
     vehiclenumber: request.body.vehiclenumber,
     vehicletype: request.body.vehicletype,
@@ -216,66 +267,84 @@ app.post("/postvehicle", (request, response) => {
     chasisno: request.body.chasisno,
     cost: request.body.cost,
   };
-  dbconnection.insertvehicle(object).then((res) => {
-    if (res) {
+  vehicleController
+    .vehiclePost(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
   console.log("Data added");
 });
 
 //To get all the vehicle's  _id,_rev... form database
-app.get("/getvehicle", (request, response) => {
+app.get("/getVehicle", (request, response) => {
   console.log("start");
-  dbconnection.getvehicle().then((res) => {
-    if (res) {
+  vehicleController
+    .vehicleGetId()
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully get list of the user's  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get _id of users data");
+      logger.logger.error("error", `can not get _id of users data ${err}`);
+    });
 });
 
 //To get the all vehicle's data value from database
-app.get("/getvehicle/:id", (request, response) => {
+app.get("/getVehicle/:id", (request, response) => {
   console.log("getting id from database" + request.params.id);
-  dbconnection.getallvehicle(request.params.id).then((res) => {
-    if (res) {
-      console.log(res);
+  vehicleController
+    .vehicleGetDetails(request.params.id)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
-
+      logger.logger.log(
+        "info",
+        `successfully get details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
+    });
   console.log("end");
 });
 
 //To delete particular vehicle from database
 
-app.delete("/deletevehicle/:id/:id1", (request, response) => {
+app.delete("/deleteVehicle/:id/:id1", (request, response) => {
   console.log("hi");
   console.log(
     "getting id from id and id2:" + request.params.id + request.params.id1
   );
   console.log("deleting start");
-  dbconnection
-    .deletevehicle(request.params.id, request.params.id1)
+  vehicleController
+    .vehicleDeleteDetails(request.params.id, request.params.id1)
     .then((res) => {
-      if (res) {
-        console.log("deleted success");
-        response.send(res);
-      } else {
-        console.log("can not deleted...");
-        response.send("error");
-      }
+      response.send(res);
+      logger.logger.log(
+        "info",
+        `successfully delete details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
     });
 });
 
 // To update the particular vehicle data using id
-app.put("/updatevehicle", (request, response) => {
+app.put("/updateVehicle", (request, response) => {
   console.log("hey");
   var object = {
     _id: request.body._id,
@@ -288,302 +357,381 @@ app.put("/updatevehicle", (request, response) => {
     chasisno: request.body.chasisno,
     cost: request.body.cost,
   };
-  dbconnection.updatevehicle(object).then((res) => {
-    if (res) {
-      console.log("updated....");
+  vehicleController
+    .vehicleUpdateDetails(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      console.log("can not updated....");
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
 });
 
 //-------------------------
 
 //Fuel---------------------------------------------------------
 //To post the fuel data to the database
-app.post("/postfuel", (request, response) => {
-  // console.log("hello");
+app.post("/postFuel", (request, response) => {
   var object = {
-    vehiclenumber: request.body.vehiclenumber,
-    vehicletype: request.body.vehicletype,
     quantity: request.body.quantity,
     fillingdate: request.body.fillingdate,
     cost: request.body.cost,
+    unique: request.body.unique,
   };
-  dbconnection.insertfuel(object).then((res) => {
-    if (res) {
+  fuelController
+    .fuelPost(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
   console.log("Data added");
 });
 
 //To get all the fuel's  _id,_rev... form database
-app.get("/getfuel", (request, response) => {
+app.get("/getFuel", (request, response) => {
   console.log("start");
-  dbconnection.getfuel().then((res) => {
-    if (res) {
+  fuelController
+    .fuelGetId()
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully get list of the user's  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get _id of users data");
+      logger.logger.error("error", `can not get _id of users data ${err}`);
+    });
 });
 
 //To get the all fuel's data value from database
-app.get("/getfuel/:id", (request, response) => {
+app.get("/getFuel/:id", (request, response) => {
   console.log("getting id from database" + request.params.id);
-  dbconnection.getallfuel(request.params.id).then((res) => {
-    if (res) {
-      console.log(res);
+  fuelController
+    .fuelGetDetails(request.params.id)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully get details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
+    });
 
   console.log("end");
 });
 
 //To delete particular fuel from database
 
-app.delete("/deletefuel/:id/:id1", (request, response) => {
+app.delete("/deleteFuel/:id/:id1", (request, response) => {
   console.log("hi");
   console.log(
     "getting id from id and id2:" + request.params.id + request.params.id1
   );
   console.log("deleting start");
-  dbconnection.deletefuel(request.params.id, request.params.id1).then((res) => {
-    if (res) {
-      console.log("deleted success");
+  fuelController
+    .fuelDeleteDetails(request.params.id, request.params.id1)
+    .then((res) => {
       response.send(res);
-    } else {
-      console.log("can not deleted...");
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully delete details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
+    });
 });
 
 // To update the particular fuel data using id
-app.put("/updatefuel", (request, response) => {
+app.put("/updateFuel", (request, response) => {
   console.log("hey");
   var object = {
     _id: request.body._id,
     _rev: request.body._rev,
-    vehiclenumber: request.body.vehiclenumber,
-    vehicletype: request.body.vehicletype,
     quantity: request.body.quantity,
     fillingdate: request.body.fillingdate,
     cost: request.body.cost,
+    unique: request.body.unique,
   };
-  dbconnection.updatefuel(object).then((res) => {
-    if (res) {
-      console.log("updated....");
+  fuelController
+    .fuelUpdateDetails(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      console.log("can not updated....");
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
 });
 
 //----------------------------------------------------------
 
 //Insurance---------------------------------------------------------
 //To post the insurance data to the database
-app.post("/postinsurance", (request, response) => {
+app.post("/postInsurance", (request, response) => {
   // console.log("hello");
   var object = {
-    vehiclenumber: request.body.vehiclenumber,
-    vehicletype: request.body.vehicletype,
+    // vehiclenumber: request.body.vehiclenumber,
+    // vehicletype: request.body.vehicletype,
     company: request.body.company,
     startdate: request.body.startdate,
     enddate: request.body.enddate,
     cost: request.body.cost,
+    unique: request.body.unique,
   };
-  dbconnection.insertinsurance(object).then((res) => {
-    if (res) {
+  insuranceController
+    .insurancePost(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
   console.log("Data added");
 });
 
 //To get all the insurance's  _id,_rev... form database
-app.get("/getinsurance", (request, response) => {
+app.get("/getInsurance", (request, response) => {
   console.log("start");
-  dbconnection.getinsurance().then((res) => {
-    if (res) {
+  insuranceController
+    .insuranceGetId()
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully get list of the user's  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get _id of users data");
+      logger.logger.error("error", `can not get _id of users data ${err}`);
+    });
 });
 
 //To get the all insurance's data value from database
-app.get("/getinsurance/:id", (request, response) => {
+app.get("/getInsurance/:id", (request, response) => {
   console.log("getting id from database" + request.params.id);
-  dbconnection.getallinsurance(request.params.id).then((res) => {
-    if (res) {
-      console.log(res);
+  insuranceController
+    .insuranceGetDetails(request.params.id)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully get details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
+    });
 
   console.log("end");
 });
 
 //To delete particular insurance from database
 
-app.delete("/deleteinsurance/:id/:id1", (request, response) => {
+app.delete("/deleteInsurance/:id/:id1", (request, response) => {
   console.log("hi");
   console.log(
     "getting id from id and id2:" + request.params.id + request.params.id1
   );
   console.log("deleting start");
-  dbconnection
-    .deleteinsurance(request.params.id, request.params.id1)
+  insuranceController
+    .insuranceDeleteDetails(request.params.id, request.params.id1)
     .then((res) => {
-      if (res) {
-        console.log("deleted success");
-        response.send(res);
-      } else {
-        console.log("can not deleted...");
-        response.send("error");
-      }
+      response.send(res);
+      logger.logger.log(
+        "info",
+        `successfully delete details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
     });
 });
 
 // To update the particular insurance data using id
-app.put("/updateinsurance", (request, response) => {
+app.put("/updateInsurance", (request, response) => {
   console.log("hey");
   var object = {
     _id: request.body._id,
     _rev: request.body._rev,
-    vehiclenumber: request.body.vehiclenumber,
-    vehicletype: request.body.vehicletype,
+    // vehiclenumber: request.body.vehiclenumber,
+    // vehicletype: request.body.vehicletype,
     company: request.body.company,
     startdate: request.body.startdate,
     enddate: request.body.enddate,
     cost: request.body.cost,
+    unique: request.body.unique,
   };
-  dbconnection.updateinsurance(object).then((res) => {
-    if (res) {
-      console.log("updated....");
+  insuranceController
+    .insuranceUpdateDetails(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      console.log("can not updated....");
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
 });
 
 //----------------------------------------------------------
 
 //Maintanence---------------------------------------------------------
 //To post the maintanence data to the database
-app.post("/postmaintanence", (request, response) => {
+app.post("/postMaintanence", (request, response) => {
   // console.log("hello");
   var object = {
-    vehiclenumber: request.body.vehiclenumber,
-    vehicletype: request.body.vehicletype,
+    // vehiclenumber: request.body.vehiclenumber,
+    // vehicletype: request.body.vehicletype,
     date: request.body.date,
     cost: request.body.cost,
+    description: request.body.description,
+    unique: request.body.unique,
   };
-  dbconnection.insertmaintanence(object).then((res) => {
-    if (res) {
+  maintanenceController
+    .maintanencePost(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
   console.log("Data added");
 });
 
 //To get all the maintanence's  _id,_rev... form database
-app.get("/getmaintanence", (request, response) => {
+app.get("/getMaintanence", (request, response) => {
   console.log("start");
-  dbconnection.getmaintanence().then((res) => {
-    if (res) {
+  maintanenceController
+    .maintanenceGetId()
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully get list of the user's  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get _id of users data");
+      logger.logger.error("error", `can not get _id of users data ${err}`);
+    });
 });
 
 //To get the all maintanence's data value from database
-app.get("/getmaintanence/:id", (request, response) => {
+app.get("/getMaintanence/:id", (request, response) => {
   console.log("getting id from database" + request.params.id);
-  dbconnection.getallmaintanence(request.params.id).then((res) => {
-    if (res) {
-      console.log(res);
+  maintanenceController
+    .maintanenceGetDetails(request.params.id)
+    .then((res) => {
       response.send(res);
-    } else {
-      response.send("error");
-    }
-  });
+      logger.logger.log(
+        "info",
+        `successfully get details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
+    });
 
   console.log("end");
 });
 
 //To delete particular maintanence from database
 
-app.delete("/deletemaintanence/:id/:id1", (request, response) => {
+app.delete("/deleteMaintanence/:id/:id1", (request, response) => {
   console.log("hi");
   console.log(
     "getting id from id and id2:" + request.params.id + request.params.id1
   );
   console.log("deleting start");
-  dbconnection
-    .deletemaintanence(request.params.id, request.params.id1)
+  dbconnection;
+  maintanenceController
+    .maintanenceDeleteDetails(request.params.id, request.params.id1)
     .then((res) => {
-      if (res) {
-        console.log("deleted success");
-        response.send(res);
-      } else {
-        console.log("can not deleted...");
-        response.send("error");
-      }
+      response.send(res);
+      logger.logger.log(
+        "info",
+        `successfully delete details of the user's from  _id ${res}`
+      );
+    })
+    .catch((err) => {
+      response.send("can not get details of users data");
+      logger.logger.error("error", `can not get details of users data ${err}`);
     });
 });
 
 // To update the particular maintanence data using id
-app.put("/updatemaintanence", (request, response) => {
+app.put("/updateMaintanence", (request, response) => {
   console.log("hey");
   var object = {
     _id: request.body._id,
     _rev: request.body._rev,
-    vehiclenumber: request.body.vehiclenumber,
-    vehicletype: request.body.vehicletype,
+    // vehiclenumber: request.body.vehiclenumber,
+    // vehicletype: request.body.vehicletype,
     date: request.body.date,
     cost: request.body.cost,
+    description: request.body.cost,
+    unique: request.body.unique,
   };
-  dbconnection.updatemaintanence(object).then((res) => {
-    if (res) {
-      console.log("updated....");
+  maintanenceController
+    .maintanenceUpdateDetails(object)
+    .then((res) => {
       response.send(res);
-    } else {
-      console.log("can not updated....");
-      response.send("error");
-    }
-  });
+      logger.logger.log("info", `response send to the angular ${res}`);
+    })
+    .catch((err) => {
+      response.send("something went wrong while sending response from node");
+      logger.logger.log(
+        "info",
+        "something went wrong while sending response from node"
+      );
+    });
 });
 
 //----------------------------------------------------------
 
 app.listen(port, (err) => {
   if (err) {
-    return console.log("something bad happened", err);
+    logger.logger.error("error", `something bad happened ${err}`);
   }
-  console.log(`server is listening on http://localhost:${port}`);
+  logger.logger.log("info", `server is listening on http://localhost:${port}`);
 });
