@@ -14,10 +14,7 @@ import { SharedserviceService } from '../service/sharedservice.service';
 export class AddUserComponent implements OnInit {
   hide=true;
   userform!:FormGroup;
-  alluser!:any;
-  store:any=[];
-  showAdd!:boolean;
-  showUpdate!:boolean;
+  
   
   constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService,private route:Router) { }
 
@@ -40,21 +37,19 @@ export class AddUserComponent implements OnInit {
   //show add and hide update button using this function
   showOrHide(){
     this.userform.reset();
-    this.showAdd=true;
-    this.showUpdate=false;
+    this.share.showAdd=true;
+    this.share.showUpdate=false;
   }
   
   //Add user details fun
 
   adduser(formvalue:any){
-    console.log(formvalue);
     this.api.addUser(formvalue).subscribe(res=>{
-      console.log("hello");
       alert("Your data was posted successfully!");
       this.userform.reset();
       let cancel=document.getElementById("cancel");
       cancel?.click();
-      this.store=[];
+      this.share.store=[];
       this.getuser();
     },rej=>{
       alert("opps! Can not post data"+rej);
@@ -66,23 +61,14 @@ export class AddUserComponent implements OnInit {
 
   getuser(){
     this.api.getUserData().subscribe(res=>{
-      console.log(res);
-      console.log("response is comming");
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      console.log(this.alluser);
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          console.log(element.id);
-          this.api.getAllUserData(element.id).subscribe(res=>{
-            console.log(res);
-            this.store.push(res);
-            console.log("data is came");
-          },rej=>{
-            console.log("error"+rej);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllUserData(key.id).subscribe(res=>{
+          this.share.store.push(res);
+        },rej=>{
+          console.log("error",rej);
+        })
       }
     },rej=>{
         alert("opps! Somthing went wrong"+rej);
@@ -93,10 +79,8 @@ export class AddUserComponent implements OnInit {
   
   delete(data:any){
     this.api.deleteUser(data._id,data._rev).subscribe(res=>{
-      console.log("delete response get");
-      console.log(res);
       alert("your data has deleted, please refresh the page");
-      this.store=[];
+      this.share.store=[];
       this.getuser();
     },rej=>{
       alert("oops can not delete"+rej);
@@ -107,8 +91,8 @@ export class AddUserComponent implements OnInit {
   //To set the values in the field
 
   onEdit(row:any){
-    this.showAdd=false;
-    this.showUpdate=true;
+    this.share.showAdd=false;
+    this.share.showUpdate=true;
     this.userform.controls['name'].setValue(row.name);
     this.userform.controls['username'].setValue(row.username);
     this.userform.controls['pwd'].setValue(row.pwd);
@@ -125,51 +109,38 @@ export class AddUserComponent implements OnInit {
   update(formvalue:NgForm){
     console.log(formvalue);
     this.api.updateUser(formvalue).subscribe(res=>{
-      console.log("update success");
-      console.log(res);
       alert("Your data was updated successfully!");
       this.userform.reset();
       let cancel=document.getElementById("cancel");
       cancel?.click();
-      this.store=[];
+      this.share.store=[];
       this.getuser();
     },rej=>{
-      console.log("can not update.....");
+      console.log("can not update.....",rej);
     })
   }
 
   //To check the user is already exist using username and mobile
 
   userCheck(formvalue:any){
-    console.log("usercheck");
-    this.showAdd=false;
+    this.share.showAdd=false;
     this.api.getUserData().subscribe(res=>{
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        console.log("usercheck1");
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllUserData(element.id).subscribe(res=>{
-            console.log("usercheck2");
-
-            this.share.storeValidation.push(res);
-            for (const iterator of this.share.storeValidation) {
-              console.log(iterator.username);
-              if((iterator.username==formvalue.username   && iterator.password==formvalue.pwd)){
-                this.share.primaryCheck=1;
-                console.log(iterator.username);
-                console.log(iterator.pwd);
-              }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllUserData(key.id).subscribe(res=>{
+          this.share.storeValidation.push(res);
+          for (const iterator of this.share.storeValidation) {
+            if((iterator.username==formvalue.username   && iterator.password==formvalue.pwd)){
+              this.share.primaryCheck=1;
             }
-          })
-          
-        }
+          }
+        })
       }
       setTimeout(()=>{
         if(this.share.primaryCheck==1){
           alert("Username and Password already in use try another one!");
-          this.store=[];
+          this.share.store=[];
           this.getuser();
         }else{
           this.adduser(formvalue);

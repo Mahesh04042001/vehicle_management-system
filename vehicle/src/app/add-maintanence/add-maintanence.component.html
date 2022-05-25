@@ -25,7 +25,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of store | filter:this.share.searchText">
+        <tr *ngFor="let user of this.share.store | filter:this.share.searchText">
             <td>{{user.vehiclenumber}}</td>
             <td>{{user.vehicletype}}</td>
             <td>{{user.date | date:'dd/MM/YYYY'}}</td>
@@ -60,21 +60,16 @@
             <div class="modal-body">
                 <form [formGroup]="maintanenceform">
                     <div>
-                        <label for="vinNumber" class="form-label">
+                        <label for="vinNumber" *ngIf="this.share.setFieldShow" class="form-label">
                             Select Vehicle Number
                         </label>
-                        <select type="text" id="vinNumber" (change)=setField($event) class="form-control"
-                            formControlName="vinNumber">
+                        <select type="text" *ngIf="this.share.setFieldShow" id="vinNumber" (change)=setField($event)
+                            class="form-control" formControlName="vinNumber">
                             <option value="0">Please Select One</option>
-                            <option *ngFor="let user of storeDrobdownObj" [value]="user._id">
+                            <option *ngFor="let user of this.share.storeDrobdownObj" [value]="user._id">
                                 {{user.vehiclenumber}}
                             </option>
                         </select>
-                        <span class="text-danger"
-                            *ngIf="maintanenceform.controls['vinNumber'].dirty && maintanenceform.hasError('required','vinNumber')">*Dropdown
-                            box must be filled
-                            is required!!
-                        </span>
                     </div>
                     <div>
                         <label for="vehiclenumber" class="form-label">
@@ -136,11 +131,11 @@
                     Close
                 </button>
                 <button type="button" id="cancel" class="btn btn-primary" [disabled]="!maintanenceform.valid"
-                    *ngIf="showAdd" (click)="add(this.maintanenceform.value)">
+                    *ngIf="this.share.showAdd" (click)="add(this.maintanenceform.value)">
                     Add
                 </button>
                 <button type="button" id="cancel" class="btn btn-primary" [disabled]="!maintanenceform.valid"
-                    (click)="update(this.maintanenceform.value)" *ngIf="showUpdate">
+                    (click)="update(this.maintanenceform.value)" *ngIf="this.share.showUpdate">
                     Update
                 </button>
             </div>

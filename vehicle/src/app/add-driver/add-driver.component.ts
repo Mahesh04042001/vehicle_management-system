@@ -11,10 +11,6 @@ import { SharedserviceService } from '../service/sharedservice.service';
 })
 export class AddDriverComponent implements OnInit {
   driverform!:FormGroup;
-  alluser!:any;
-  store:any=[];
-  showAdd!:boolean;
-  showUpdate!:boolean;
   constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
@@ -35,20 +31,18 @@ export class AddDriverComponent implements OnInit {
   //show add and hide update button
   showOrHide(){
     this.driverform.reset();
-    this.showAdd=true;
-    this.showUpdate=false;
+    this.share.showAdd=true;
+    this.share.showUpdate=false;
   }
   
   //add record to the database
   add(formvalue:NgForm){
-    console.log(formvalue);
     this.api.addDriverData(formvalue).subscribe(res=>{
-      console.log("hello");
       alert("Your data was posted successfully!");
       this.driverform.reset();
       let cancel=document.getElementById("cancel");
       cancel?.click();
-      this.store=[];
+      this.share.store=[];
       this.get();
     },rej=>{
       alert("opps! Can not post data"+rej);
@@ -58,23 +52,15 @@ export class AddDriverComponent implements OnInit {
   //get the all details of form
   get(){
     this.api.getDriverData().subscribe(res=>{
-      console.log(res);
-      console.log("response is comming");
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      console.log(this.alluser);
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          console.log(element.id);
-          this.api.getAllDriverData(element.id).subscribe(res=>{
-            console.log(res);
-            this.store.push(res);
-            console.log("data is came");
-          },rej=>{
-            console.log("error"+rej);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      console.log(this.share.allIdObj);
+      for (const key of this.share.allIdObj) {
+        this.api.getAllDriverData(key.id).subscribe(res=>{
+          this.share.store.push(res);
+        },rej=>{
+          console.log("error",rej);
+        })
       }
     },rej=>{
         alert("opps! Somthing went wrong"+rej);
@@ -85,10 +71,8 @@ export class AddDriverComponent implements OnInit {
   //delete the particular record
   delete(data:any){
     this.api.deleteDriverData(data._id,data._rev).subscribe(res=>{
-      console.log("delete response get");
-      console.log(res);
       alert("your data has deleted, please refresh the page");
-      this.store=[];
+      this.share.store=[];
       this.get();
     },rej=>{
       alert("oops can not delete"+rej);
@@ -97,8 +81,8 @@ export class AddDriverComponent implements OnInit {
   
   //set the value in form fields
   onEdit(row:any){
-    this.showAdd=false;
-    this.showUpdate=true;
+    this.share.showAdd=false;
+    this.share.showUpdate=true;
     this.driverform.controls['drivername'].setValue(row.drivername);
     this.driverform.controls['mobile'].setValue(row.mobile);
     this.driverform.controls['licencenumber'].setValue(row.licencenumber);
@@ -111,15 +95,12 @@ export class AddDriverComponent implements OnInit {
 
   //update the existing form
   update(formvalue:NgForm){
-    console.log(formvalue);
     this.api.updateDriverData(formvalue).subscribe(res=>{
-      console.log("update success");
-      console.log(res);
       alert("Your data was updated successfully!");
       this.driverform.reset();
       let cancel=document.getElementById("cancel");
       cancel?.click();
-      this.store=[];
+      this.share.store=[];
       this.get();
     },rej=>{
       console.log("can not update....."+rej);
@@ -128,27 +109,25 @@ export class AddDriverComponent implements OnInit {
 
   //check dublicate validation using licence number
   driverCheck(formvalue:any){
-    this.showAdd=false;
+    this.share.showAdd=false;
     this.api.getDriverData().subscribe(res=>{
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllDriverData(element.id).subscribe(res=>{
-            this.share.storeValidation.push(res);
-            for (const iterator of this.share.storeValidation) {
-              if(iterator.licencenumber==formvalue.licencenumber){
-                this.share.primaryCheck=1;
-              }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllDriverData(key.id).subscribe(res=>{
+        this.share.storeValidation.push(res);
+        console.log(this.share.storeValidation);
+          for (const iterator of this.share.storeValidation) {
+            if(iterator.licencenumber==formvalue.licencenumber){
+              this.share.primaryCheck=1;
             }
-          })
-        }
+          }
+        })
       }
       setTimeout(()=>{
         if(this.share.primaryCheck==1){
           alert("Licence number already exist try another one!");
-          this.store=[];
+          this.share.store=[];
           this.get();
         }else{
           this.add(formvalue);

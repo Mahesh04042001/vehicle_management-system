@@ -28,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of store | filter:this.share.searchText">
+        <tr *ngFor="let user of this.share.store | filter:this.share.searchText">
             <td>{{user.drivername}}</td>
             <td>{{user.mobile}}</td>
             <td>{{user.licencenumber}}</td>
@@ -134,12 +134,12 @@
                 <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary" [disabled]="!driverform.valid" *ngIf="showAdd"
+                <button type="button" class="btn btn-primary" [disabled]="!driverform.valid" *ngIf="this.share.showAdd"
                     (click)="driverCheck(this.driverform.value)">
                     Add
                 </button>
                 <button type="button" class="btn btn-primary" [disabled]="!driverform.valid"
-                    (click)="update(this.driverform.value)" *ngIf="showUpdate">
+                    (click)="update(this.driverform.value)" *ngIf="this.share.showUpdate">
                     Update
                 </button>
             </div>

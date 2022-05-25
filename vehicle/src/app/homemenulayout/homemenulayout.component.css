@@ -10,10 +10,9 @@
     list-style: none;
 }
 .vms-heading{
-    color: white;
     margin-left: -100px;
 }
-.fas{
+.fas,.vms-heading,.admin{
     color: white;
 }
 a{
@@ -24,8 +23,8 @@ a{
 }
 .dropdown button{
     border-style: none;
-    font-weight: bold;
     font-size: 17px;
+    font-weight: bold;
 }
 .dropdown-item{
     border-bottom: 1px solid black;
@@ -57,10 +56,6 @@ li a:hover,.admin:hover{
     color: black;
     padding: 8px 8px;
 }
-.admin{
-    color: white;
-}
-
 .active{
     color:rgb(41, 192, 41);
 }

@@ -5,7 +5,7 @@
         <h1 class="vms-heading">Vehicle Management</h1>
         <div class="d-flex">
             <li class="nav-list">
-                <a routerLink="/home" routerLinkActive="active">Home</a>
+                <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
             </li>
             <li class="nav-list">
                 <a routerLink="/aboutus" routerLinkActive="active">About Us</a>
@@ -15,14 +15,46 @@
                     Administration
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item " routerLink="/adduser">Add New System User</a></li>
-                    <li><a class="dropdown-item" routerLink="/adddriver">Add New Driver</a></li>
-                    <li><a class="dropdown-item" routerLink="/addvehicle">Add New Vehicle</a></li>
-                    <li><a class="dropdown-item" routerLink="/addfuel">Add Fuel</a></li>
-                    <li><a class="dropdown-item" routerLink="/addmaintain">Add Maintanence</a></li>
-                    <li><a class="dropdown-item" routerLink="/addinsurance">Add Insurance</a></li>
-                    <li><a class="dropdown-item" routerLink="/report">Report</a></li>
-                    <li><a class="dropdown-item" routerLink="/dash_board">Dashboard</a></li>
+                    <li>
+                        <a class="dropdown-item " routerLink="/adduser">
+                            Add New System User
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/adddriver">
+                            Add New Driver
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/addvehicle">
+                            Add New Vehicle
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/addfuel">
+                            Add Fuel
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/addmaintain">
+                            Add Maintanence
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/addinsurance">
+                            Add Insurance
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/report">
+                            Report
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="/dash_board">
+                            Dashboard
+                        </a>
+                    </li>
                 </ul>
             </div>
             <li>
@@ -38,3 +70,6 @@
 
     </div>
 </nav>
+<!-- <div class="container">
+    <router-outlet></router-outlet>
+</div> -->

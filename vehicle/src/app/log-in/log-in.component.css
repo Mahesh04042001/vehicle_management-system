@@ -8,17 +8,14 @@
     transform: translate(-50%,-50%);
     width: 500px;
 }
-.card h1,h6{
+.card h1,h6,label,a{
     color: white;
 }
-label{
-    color: white;
-}
+
 button{
     margin-left: 40%;
     margin-top: 10%;
 }
 a{
-    color: white;
     text-decoration: none;
 }

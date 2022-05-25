@@ -14,10 +14,7 @@ import { SharedserviceService } from '../service/sharedservice.service';
 export class AddVehicleComponent implements OnInit {
 
   vehicleform!:FormGroup;
-  alluser!:any;
-  store:any=[];
-  showAdd!:boolean;
-  showUpdate!:boolean;
+  
   constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
@@ -38,8 +35,8 @@ export class AddVehicleComponent implements OnInit {
   //This functioin is used when add
   showOrHide(){
     this.vehicleform.reset();
-    this.showAdd=true;
-    this.showUpdate=false;
+    this.share.showAdd=true;
+    this.share.showUpdate=false;
   }
   
 //Add function to add form value
@@ -54,25 +51,19 @@ export class AddVehicleComponent implements OnInit {
       },rej=>{
         alert("opps! Can not post data"+rej);
       });
-      // this.store=[];
   }
 
 //To get all data from database to show in table
   
   get(){
     this.api.getVehicleData().subscribe(res=>{
-      console.log("response is comming");
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllVehicleData(element.id).subscribe(res=>{
-            this.store.push(res);
-            },rej=>{
-            console.log("error"+rej);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllVehicleData(key.id).subscribe(res=>{
+          this.share.store.push(res);
+        },rej=>{
+        })
       }
     },rej=>{
         alert("opps! Somthing went wrong"+rej);
@@ -83,9 +74,8 @@ export class AddVehicleComponent implements OnInit {
 
   delete(data:any){
     this.api.deleteVehicleData(data._id,data._rev).subscribe(res=>{
-      console.log(res);
       alert("your data has deleted, please refresh the page");
-      this.store=[];
+      this.share.store=[];
       this.get();
     },rej=>{
       alert("oops can not delete"+rej);
@@ -95,8 +85,8 @@ export class AddVehicleComponent implements OnInit {
 //To eset values in table fields  
 
   onEdit(row:any){
-    this.showAdd=false;
-    this.showUpdate=true;
+    this.share.showAdd=false;
+    this.share.showUpdate=true;
     this.vehicleform.controls['vehiclenumber'].setValue(row.vehiclenumber);
     this.vehicleform.controls['vehicletype'].setValue(row.vehicletype);
     this.vehicleform.controls['drivername'].setValue(row.drivername);
@@ -111,47 +101,42 @@ export class AddVehicleComponent implements OnInit {
 //To update existing form values OR modified existing  
   update(formvalue:NgForm){
     this.api.updateVehicleData(formvalue).subscribe(res=>{
-      console.log("update success");
-      console.log(res);
       alert("Your data was updated successfully!");
       this.vehicleform.reset();
       let cancel=document.getElementById("cancel");
       cancel?.click();
-      this.store=[];
+      this.share.store=[];
       this.get();
       },rej=>{
-      console.log("can not update.....");
+      console.log("can not update.....",rej);
     })
   }
 
 //Vehicle database check using Chasis number
 
   vehicleCheck(formvalue:any){
-    this.showAdd=false;
+    this.share.showAdd=false;
     this.api.getVehicleData().subscribe(res=>{
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllVehicleData(element.id).subscribe(res=>{
-            this.share.storeValidation.push(res);
-            for (const iterator of this.share.storeValidation) {
-              if(iterator.chasisno==formvalue.chasisno || (iterator.vehiclenumber==formvalue.vehiclenumber && iterator.vehicletype==formvalue.vehicletype)){
-                this.share.primaryCheck=1;
-              }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllVehicleData(key.id).subscribe(res=>{
+          this.share.storeValidation.push(res);
+          for (const iterator of this.share.storeValidation) {
+            if(iterator.chasisno==formvalue.chasisno || (iterator.vehiclenumber==formvalue.vehiclenumber && iterator.vehicletype==formvalue.vehicletype)){
+              this.share.primaryCheck=1;
             }
-          })
-        }
+          }
+        })
       }
       setTimeout(()=>{
         if(this.share.primaryCheck==1){
           alert("your vehicle details already exist try new one!");
-          this.store=[];
+          this.share.store=[];
           this.get();
         }else{
           this.add(formvalue);
-          this.store=[];
+          this.share.store=[];
         }
       },1000);
     })

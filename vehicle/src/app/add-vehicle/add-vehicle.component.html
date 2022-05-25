@@ -23,7 +23,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of store | filter:this.share.searchText">
+        <tr *ngFor="let user of this.share.store | filter:this.share.searchText">
 
             <td>{{user.vehiclenumber}}</td>
             <td>{{user.vehicletype}}</td>
@@ -114,10 +114,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" [disabled]="!vehicleform.valid" *ngIf="showAdd"
+                <button type="button" class="btn btn-primary" [disabled]="!vehicleform.valid" *ngIf="this.share.showAdd"
                     (click)="vehicleCheck(this.vehicleform.value)">Add</button>
                 <button type="button" id="cancel" class="btn btn-primary" [disabled]="!vehicleform.valid"
-                    (click)="update(this.vehicleform.value)" *ngIf="showUpdate">Update</button>
+                    (click)="update(this.vehicleform.value)" *ngIf="this.share.showUpdate">Update</button>
             </div>
         </div>
     </div>

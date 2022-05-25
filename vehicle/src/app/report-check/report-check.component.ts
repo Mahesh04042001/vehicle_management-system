@@ -12,19 +12,6 @@ import { SharedserviceService } from '../service/sharedservice.service';
 export class ReportCheckComponent implements OnInit {
 
   reportForm !:FormGroup;
-  alluser!:any;
-  store:any=[];
-  showAdd!:boolean;
-  showUpdate!:boolean;
-  storeDrobdownObj:any=[];
-  storeFieldObj:any;
-  storeResObj:any;
-  entryCheck:any=0;
-  storeMaintainData:any;
-  storeVehicleData:any;
-  createObj:any;
-  Vehiclecheck:any=0;
-  arr:any=[];
   storeAllFuelId:any;
   storeAllFuelData:any;
   storeConfirmFueldata:any;
@@ -35,37 +22,30 @@ export class ReportCheckComponent implements OnInit {
   storeAllInsuranceData:any;
   storeConfirmInsuranceData:any;
   displayObject:any;
-  storeTableData:any=[];
-  constructor(private formbuilder:FormBuilder,private api:ApiService,private share:SharedserviceService) { }
+  constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
     this.reportForm=this.formbuilder.group({
       vinNumber:['',Validators.required]
-  })
-  this.setValueInDropdown();
+    })
+    this.setValueInDropdown();
   }
  
+  //display the integrated table form fuel,insurance,maintanence,vehicle database.
+  
   displayTable(val:any){
-    this.storeTableData=[];
-    console.log("Hi"+val);
-    console.log(val.target.value);
+    this.share.store=[];
     this.api.getAllVehicleData(val.target.value).subscribe(res=>{
-      console.log(res);
-      this.storeFieldObj=res;
+      this.share.storeFieldObj=res;
       this.api.getFuleData().subscribe(res=>{
         this.storeAllFuelId=res;
         this.storeAllFuelId=this.storeAllFuelId.rows;
-        console.log(this.storeAllFuelId);
-        console.log("fuel datas");
         for (const iterator of this.storeAllFuelId) {
           this.api.getAllFuelData(iterator.id).subscribe(res=>{
             this.storeAllFuelData=res;
-            console.log(this.storeAllFuelData);
             if(this.storeAllFuelData.unique==val.target.value)
             {
               this.storeConfirmFueldata=this.storeAllFuelData;
-              console.log(this.storeConfirmFueldata);
-              console.log(this.storeFieldObj);
               this.api.getMaintanenceData().subscribe(res=>{
                 this.storeAllMaintanenceId=res;
                 this.storeAllMaintanenceId=this.storeAllMaintanenceId.rows;
@@ -74,24 +54,22 @@ export class ReportCheckComponent implements OnInit {
                     this.storeAllMaintanenceData=res;
                     if(this.storeAllMaintanenceData.unique==val.target.value){
                       this.storeConfirmMaintanenceData=this.storeAllMaintanenceData;
-                      console.log(this.storeConfirmMaintanenceData);
                       this.api.getInsuranceData().subscribe(res=>{
                         this.storeAllInsuranceId=res;
                         this.storeAllInsuranceId=this.storeAllInsuranceId.rows;
                         for (const iterator of this.storeAllInsuranceId) {
-                          console.log('ho');
                           this.api.getAllInsuranceData(iterator.id).subscribe(res=>{
                             this.storeAllInsuranceData=res;
                             if(this.storeAllInsuranceData.unique==val.target.value){
                               this.storeConfirmInsuranceData=this.storeAllInsuranceData;
                               this.displayObject={
-                                drivername:this.storeFieldObj.drivername,
-                                vehiclenumber:this.storeFieldObj.vehiclenumber,
-                                vehicletype:this.storeFieldObj.vehicletype,
-                                vehiclecolor:this.storeFieldObj.color,
-                                registrationdate:this.storeFieldObj.registerdate,
-                                chasisno:this.storeFieldObj.chasisno,
-                                vehiclecost:this.storeFieldObj.cost,
+                                drivername:this.share.storeFieldObj.drivername,
+                                vehiclenumber:this.share.storeFieldObj.vehiclenumber,
+                                vehicletype:this.share.storeFieldObj.vehicletype,
+                                vehiclecolor:this.share.storeFieldObj.color,
+                                registrationdate:this.share.storeFieldObj.registerdate,
+                                chasisno:this.share.storeFieldObj.chasisno,
+                                vehiclecost:this.share.storeFieldObj.cost,
                                 quantity:this.storeConfirmFueldata.quantity,
                                 fillingdate:this.storeConfirmFueldata.fillingdate,
                                 fuelcost:this.storeConfirmFueldata.cost,
@@ -102,9 +80,7 @@ export class ReportCheckComponent implements OnInit {
                                 enddate:this.storeConfirmInsuranceData.enddate,
                                 insurancecost:this.storeConfirmInsuranceData.cost
                               }
-                              console.log("hel");
-                              console.log(this.displayObject);
-                              this.storeTableData.push(this.displayObject);
+                              this.share.store.push(this.displayObject);
                             }
                           },rej=>{
                             console.log(rej);
@@ -136,25 +112,21 @@ export class ReportCheckComponent implements OnInit {
     })
   }
 
+  //Display already existing vehicle number from vehicle database 
+
   setValueInDropdown(){
     this.api.getVehicleData().subscribe(res=>{
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllVehicleData(element.id).subscribe(res=>{
-            console.log(res);
-            this.storeDrobdownObj.push(res);
-            },rej=>{
-              console.log("error"+rej);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllVehicleData(key.id).subscribe(res=>{
+          this.share.storeDrobdownObj.push(res);
+        },rej=>{
+          console.log("error"+rej);
+        })
       }
     },rej=>{
       alert("opps! Somthing went wrong"+rej);
     })
   }
-
-  
 }

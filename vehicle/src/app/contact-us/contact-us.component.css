@@ -18,11 +18,10 @@
     margin-left: 80px;
     width: 300px;
 }
-.footer_content h3{
+.footer_content h3,hr{
     color:white;
 }
 hr{
-    color: white;
     height: 2px;
 }
 .social_media i{

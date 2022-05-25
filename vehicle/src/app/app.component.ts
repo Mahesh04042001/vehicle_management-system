@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ServiceService } from './check/service.service';
 import { SharedserviceService } from './service/sharedservice.service';
 
 @Component({
@@ -9,6 +10,6 @@ import { SharedserviceService } from './service/sharedservice.service';
 export class AppComponent {
   title = 'vehicle';
   sideBarOpen=true;
-  constructor(public show:SharedserviceService) { }
+  constructor(public ser:ServiceService) { }
  
 }

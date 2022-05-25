@@ -7,19 +7,14 @@
     box-shadow: 5px 10px 20px grey;
     flex-direction: column;
     display: flex;
+    height: 300px;
     margin-bottom: 20px;
     padding: 5px;
     text-align: center;
     width: 350px;
-    height: 300px;
 }
-.about-card h3{
-    /* color: #173050; */
-    color: white;
-    /* font-weight: bold; */
-}
-.about-all-card p{
-    /* color: #173050; */
+
+.about-all-card p,.about-card h3{
     color: white;
 }
 .about-card:hover{

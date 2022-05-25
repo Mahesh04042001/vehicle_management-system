@@ -15,10 +15,11 @@ import { AddInsuranceComponent } from './add-insurance/add-insurance.component';
 import { AboutProductComponent } from './about-product/about-product.component';
 import { ReportCheckComponent } from './report-check/report-check.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthendicationGuard } from './authendication.guard';
 const routes: Routes = [
-  // {path:'',redirectTo:'login',pathMatch:'full'},
-  {path:'menu',component:AppComponent},
-  {path:'menu',component:HomemenulayoutComponent},
+  {path:'',redirectTo:'login',pathMatch:'full'},
+  // {path:'menu',component:AppComponent},
+  {path:'menu',canActivate:[AuthendicationGuard],component:HomemenulayoutComponent},
   {path:'home',component:HomeComponent},
   {path:'contactus',component:ContactUsComponent},
   {path:'aboutus',component:AboutProductComponent},

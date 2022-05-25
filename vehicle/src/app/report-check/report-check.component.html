@@ -1,31 +1,35 @@
 <div class="container">
     <div>
-        <h5 class="text-warning">NOTE:* Please ensure your vehicle data are in all four forms table to display the
-            related
-            details
-            such as driver form,vehicle form,
-            fuel form,maintanence form,insurance form</h5>
+        <h5 class="text-warning">
+            NOTE:* Please ensure your vehicle data are in all four forms table to display the
+            related details such as driver form,vehicle form,fuel form, maintanence form,insurance form
+        </h5>
     </div>
+
+    <!--Drobdown Field-->
+
     <form [formGroup]="reportForm">
         <div>
             <label for="vinNumber" class="form-label">
-                <h5>Select Vehicle Number In Dropdown Box:</h5>
+                <h5>
+                    Select Vehicle Number In Dropdown Box:
+                </h5>
             </label>
             <select class="drobdown" type="text" id="vinNumber" (change)=displayTable($event) class="form-control"
                 formControlName="vinNumber">
-                <option value="0">Please Select One</option>
-                <option *ngFor="let user of storeDrobdownObj" [value]="user._id">
+                <option value="0">
+                    Please Select One
+                </option>
+                <option *ngFor="let user of this.share.storeDrobdownObj" [value]="user._id">
                     {{user.vehiclenumber}}{{user.vahicletype}}
                 </option>
             </select>
-            <span class="text-danger"
-                *ngIf="reportForm.controls['vinNumber'].dirty && reportForm.hasError('required','vinNumber')">*Dropdown
-                box must be filled
-                is required!!
-            </span>
         </div>
     </form>
 </div>
+
+<!--Table-->
+
 <table class="reportTable">
     <thead>
         <tr>
@@ -48,7 +52,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let data of storeTableData">
+        <tr *ngFor="let data of this.share.store">
             <td>{{data.drivername}}</td>
             <td>{{data.vehiclenumber}}</td>
             <td>{{data.vehicletype}}</td>

@@ -13,27 +13,14 @@ import { SharedserviceService } from '../service/sharedservice.service';
 export class AddFuelComponent implements OnInit {
 
   fuelform!:FormGroup;
-  alluser!:any;
-  storeded:any=[];
-  storeDrobdownObj:any=[];
-  storeFieldObj:any;
-  showAdd!:boolean;
-  showUpdate!:boolean;
-  storeResObj:any;
-  entryCheck:any=0;
-  storeFuelData:any;
-  storeVehicleData:any;
-  createObj:any;
-  Vehiclecheck:any=0;
-  arr:any=[];
   storeFuelObj:any;
   storeAllFuelObj:any;
-
+  storeFuelData:any;
   constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
     this.fuelform=this.formbuilder.group({
-      vinNumber:['',Validators.required],
+      vinNumber:[''],
       vehiclenumber:['',Validators.required],
       vehicletype:['',Validators.required],
       quantity:['',Validators.required],
@@ -51,48 +38,38 @@ export class AddFuelComponent implements OnInit {
   //To show add and hide update button
   showOrHide(){
     this.fuelform.reset();
-    this.showAdd=true;
-    this.showUpdate=false;
+    this.share.showAdd=true;
+    this.share.showUpdate=false;
+    this.share.setFieldShow=true;
   }
   
   
  
-  // setField(val:any){
-  //   console.log("Hi"+val);
-  //   this.api.getAllVehicleData(val.target.value).subscribe(res=>{
-  //     console.log(res);
-  //     this.storeFieldObj=res;
-  //     this.fuelform.controls['vehiclenumber'].setValue(this.storeFieldObj.vehiclenumber);
-  //     this.fuelform.controls['vehicletype'].setValue(this.storeFieldObj.vehicletype);
-  //   })
-  // }
+
 
   setField(val:any){
-    this.entryCheck=0;
-    console.log("Hi"+val);
+    this.share.entryCheck=0;
     this.api.getAllVehicleData(val.target.value).subscribe(res=>{
-      console.log(res);
-      this.storeFieldObj=res;
-      this.fuelform.controls['vehiclenumber'].setValue(this.storeFieldObj.vehiclenumber);
-      this.fuelform.controls['vehicletype'].setValue(this.storeFieldObj.vehicletype);
+      this.share.storeFieldObj=res;
+      this.fuelform.controls['vehiclenumber'].setValue(this.share.storeFieldObj.vehiclenumber);
+      this.fuelform.controls['vehicletype'].setValue(this.share.storeFieldObj.vehicletype);
       this.api.getFuleData().subscribe(res=>{
         this.storeFuelObj=res;
         this.storeFuelObj=this.storeFuelObj.rows;
-        console.log(this.storeFuelObj);
         for (const key in this.storeFuelObj) {
-            const element = this.storeFuelObj[key];
-            this.api.getAllFuelData(element.id).subscribe(res=>{
-              this.storeAllFuelObj=res;
-              if(this.storeAllFuelObj.unique==val.target.value){
-                this.entryCheck=1;
-                this.showAdd=false;
-              }
-            })
+          const element = this.storeFuelObj[key];
+          this.api.getAllFuelData(element.id).subscribe(res=>{
+            this.storeAllFuelObj=res;
+            if(this.storeAllFuelObj.unique==val.target.value){
+              this.share.entryCheck=1;
+              this.share.showAdd=false;
+            }
+          })
         }
       })
     })
     setTimeout(() => {
-      if(this.entryCheck==1){
+      if(this.share.entryCheck==1){
         alert("vehicle number and type already exist try another one");
       }
     }, 500);
@@ -101,10 +78,8 @@ export class AddFuelComponent implements OnInit {
   //to delete the particular table field
   delete(data:any){
     this.api.deleteFuelData(data._id,data._rev).subscribe(res=>{
-      console.log("delete response get");
-      console.log(res);
       alert("your data has deleted, please refresh the page");
-      this.storeded=[];
+      this.share.store=[];
       this.get();
     },rej=>{
       alert("oops can not delete"+rej);
@@ -114,8 +89,9 @@ export class AddFuelComponent implements OnInit {
 
   //setValue in form
   onEdit(row:any){
-    this.showAdd=false;
-    this.showUpdate=true;
+    this.share.showAdd=false;
+    this.share.showUpdate=true;
+    this.share.setFieldShow=false;
     this.fuelform.controls['vehiclenumber'].setValue(row.vehiclenumber);
     this.fuelform.controls['vehicletype'].setValue(row.vehicletype);
     this.fuelform.controls['quantity'].setValue(row.quantity);
@@ -128,52 +104,37 @@ export class AddFuelComponent implements OnInit {
 
   //update existing form value
   update(formvalue:any){
-    console.log("update start");
-    console.log(this.storeded);
-    console.log(formvalue);
-    console.log("update"+formvalue._id);
     this.api.updateFuelData(formvalue).subscribe(res=>{
       alert("Your data was updated successfully!");
       this.fuelform.reset();
       let cancel=document.getElementById("cancel");
       cancel?.click();
-      console.log("settimeout");
-      console.log(this.storeded);
     },rej=>{
       console.log("can not update.....",rej);
     });
-    this.storeded=[]
+    this.share.store=[]
     this.get();
   }
   
 
   //Add new record
   add(formvalue:any){
-    this.showAdd=false;
+    this.share.showAdd=false;
     this.api.getVehicleData().subscribe(res=>{
-      console.log(res);
-      console.log("response is comming");
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      console.log(this.alluser);
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          console.log(element.id);
-          this.api.getAllVehicleData(element.id).subscribe(res=>{
-            console.log(res);
-            this.storeResObj=res;
-            if(this.storeResObj.vehiclenumber==formvalue.vehiclenumber && this.storeResObj.vehicletype==formvalue.vehicletype){
-              console.log(this.storeResObj._id);
-              this.Vehiclecheck=1;
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+          this.api.getAllVehicleData(key.id).subscribe(res=>{
+            this.share.storeResObj=res;
+            if(this.share.storeResObj.vehiclenumber==formvalue.vehiclenumber && this.share.storeResObj.vehicletype==formvalue.vehicletype){
+              this.share.Vehiclecheck=1;
               var obj={
                 quantity:formvalue.quantity,
                 fillingdate:formvalue.fillingdate,
                 cost:formvalue.cost,
-                unique:this.storeResObj._id,
+                unique:this.share.storeResObj._id,
               };
               this.api.addFuelData(obj).subscribe(res=>{
-                console.log("hello"+res);
                 alert("Your data was posted successfully!");
                 this.fuelform.reset();
                 let cancel=document.getElementById("cancel");
@@ -186,15 +147,14 @@ export class AddFuelComponent implements OnInit {
           },rej=>{
             console.log("error"+rej);
           })
-        }
       }
       
     },rej=>{
         alert("opps! Somthing went wrong"+rej);
     })
     setTimeout(():any=>{
-      if(this.Vehiclecheck==1){
-        this.storeded=[];
+      if(this.share.Vehiclecheck==1){
+        this.share.store=[];
         this.get();
         return 1;
       }else{
@@ -207,62 +167,46 @@ export class AddFuelComponent implements OnInit {
   }
   setValueInDropdown(){
     this.api.getVehicleData().subscribe(res=>{
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllVehicleData(element.id).subscribe(res=>{
-            console.log(res);
-            this.storeDrobdownObj.push(res);
-            },rej=>{
-              console.log("error"+rej);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllVehicleData(key.id).subscribe(res=>{
+          this.share.storeDrobdownObj.push(res);
+        },rej=>{
+          console.log("error"+rej);
+        })
       }
     },rej=>{
       alert("opps! Somthing went wrong"+rej);
     })
   }
   get(){
-    this.arr=[];
+    this.share.arr=[];
     this.api.getFuleData().subscribe(res=>{
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllFuelData(element.id).subscribe(res => {
-            this.storeFuelData = res;
-            console.log(this.storeFuelData);    
-            this.arr.push(this.storeFuelData);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllFuelData(key.id).subscribe(res => {
+          this.storeFuelData = res;
+          this.share.arr.push(this.storeFuelData);
+        })
       }
       setTimeout(()=>{
-        console.log("timout");
-        console.log(this.arr);
-        console.log("check storeded array");
-        console.log(this.storeded);
-        for (const key in this.arr) {
-          if (Object.prototype.hasOwnProperty.call(this.arr, key)) {
-            const element = this.arr[key];
-            this.api.getAllVehicleData(element.unique).subscribe(res => {
-              this.storeVehicleData = res;
-              this.createObj = {
-                vehiclenumber: this.storeVehicleData.vehiclenumber,
-                vehicletype: this.storeVehicleData.vehicletype,
-                quantity: element.quantity,
-                fillingdate: element.fillingdate,
-                cost: element.cost,
-                unique: element.unique,
-                _id: element._id,
-                _rev: element._rev
-              };
-              console.log(this.createObj);
-              this.storeded.push(this.createObj);
-            });
-          }
+        for (const key of this.share.arr) {
+          this.api.getAllVehicleData(key.unique).subscribe(res => {
+            this.share.storeVehicleData = res;
+            this.share.createObj = {
+              vehiclenumber: this.share.storeVehicleData.vehiclenumber,
+              vehicletype: this.share.storeVehicleData.vehicletype,
+              quantity: key.quantity,
+              fillingdate: key.fillingdate,
+              cost: key.cost,
+              unique: key.unique,
+              _id: key._id,
+              _rev: key._rev
+            };
+            this.share.store.push(this.share.createObj);
+          });
         }
       },500);
     },rej=>{

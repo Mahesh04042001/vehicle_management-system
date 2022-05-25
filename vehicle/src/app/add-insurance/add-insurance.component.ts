@@ -13,27 +13,14 @@ import { SharedserviceService } from '../service/sharedservice.service';
 export class AddInsuranceComponent implements OnInit {
 
   insuranceform!:FormGroup;
-  alluser!:any;
-  store:any=[];
-  store2:any;
-  showAdd!:boolean;
-  showUpdate!:boolean;
-  storeDrobdownObj:any=[];
-  storeFieldObj:any;
-  storeResObj:any;
-  entryCheck:any=0;
   storeInsureData:any;
-  storeVehicleData:any;
-  createObj:any;
-  Vehiclecheck:any=0;
-  arr:any=[];
   storeInsuranceObj:any;
   storeAllInsuranceObj:any;
   constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
     this.insuranceform=this.formbuilder.group({
-      vinNumber:['',Validators.required],
+      vinNumber:[''],
       vehiclenumber:['',Validators.required],
       vehicletype:['',Validators.required],
       company:['',Validators.required],
@@ -53,38 +40,35 @@ export class AddInsuranceComponent implements OnInit {
   //To show add and hide update button
   showOrHide(){
     this.insuranceform.reset();
-    this.showAdd=true;
-    this.showUpdate=false;
+    this.share.showAdd=true;
+    this.share.showUpdate=false;
+    this.share.setFieldShow=true;
   }
   
   //set values in drobdown
 
   setField(val:any){
-    this.entryCheck=0;
-    console.log("Hi"+val);
+    this.share.entryCheck=0;
     this.api.getAllVehicleData(val.target.value).subscribe(res=>{
-      console.log(res);
-      this.storeFieldObj=res;
-      this.insuranceform.controls['vehiclenumber'].setValue(this.storeFieldObj.vehiclenumber);
-      this.insuranceform.controls['vehicletype'].setValue(this.storeFieldObj.vehicletype);
+      this.share.storeFieldObj=res;
+      this.insuranceform.controls['vehiclenumber'].setValue(this.share.storeFieldObj.vehiclenumber);
+      this.insuranceform.controls['vehicletype'].setValue(this.share.storeFieldObj.vehicletype);
       this.api.getInsuranceData().subscribe(res=>{
         this.storeInsuranceObj=res;
         this.storeInsuranceObj=this.storeInsuranceObj.rows;
-        console.log(this.storeInsuranceObj);
-        for (const key in this.storeInsuranceObj) {
-            const element = this.storeInsuranceObj[key];
-            this.api.getAllInsuranceData(element.id).subscribe(res=>{
-              this.storeAllInsuranceObj=res;
-              if(this.storeAllInsuranceObj.unique==val.target.value){
-                this.entryCheck=1;
-                this.showAdd=false;
-              }
-            })
+        for (const key of this.storeInsuranceObj) {
+          this.api.getAllInsuranceData(key.id).subscribe(res=>{
+            this.storeAllInsuranceObj=res;
+            if(this.storeAllInsuranceObj.unique==val.target.value){
+              this.share.entryCheck=1;
+              this.share.showAdd=false;
+            }
+          })
         }
       })
     })
     setTimeout(() => {
-      if(this.entryCheck==1){
+      if(this.share.entryCheck==1){
         alert("vehicle number and type already exist try another one");
       }
     }, 500);
@@ -92,18 +76,15 @@ export class AddInsuranceComponent implements OnInit {
 
   setValueInDropdown(){
     this.api.getVehicleData().subscribe(res=>{
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllVehicleData(element.id).subscribe(res=>{
-            console.log(res);
-            this.storeDrobdownObj.push(res);
-            },rej=>{
-              console.log("error"+rej);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllVehicleData(key.id).subscribe(res=>{
+          console.log(res);
+          this.share.storeDrobdownObj.push(res);
+          },rej=>{
+            console.log("error"+rej);
+        })
       }
     },rej=>{
       alert("opps! Somthing went wrong"+rej);
@@ -113,52 +94,41 @@ export class AddInsuranceComponent implements OnInit {
   //To add insurance setails
 
   add(formvalue:any){
-    this.showAdd=false;
+    this.share.showAdd=false;
     this.api.getVehicleData().subscribe(res=>{
-      console.log(res);
-      console.log("response is comming");
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      console.log(this.alluser);
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          console.log(element.id);
-          this.api.getAllVehicleData(element.id).subscribe(res=>{
-            console.log(res);
-            this.storeResObj=res;
-            if(this.storeResObj.vehiclenumber==formvalue.vehiclenumber && this.storeResObj.vehicletype==formvalue.vehicletype){
-              console.log(this.storeResObj._id);
-              this.Vehiclecheck=1;
-              var obj={
-                company:formvalue.company,
-                startdate:formvalue.startdate,
-                enddate:formvalue.enddate,
-                cost:formvalue.cost,
-                unique:this.storeResObj._id,
-              };
-              this.api.addInsuranceData(obj).subscribe(res=>{
-                console.log("hello"+res);
-                alert("Your data was posted successfully!");
-                this.insuranceform.reset();
-                let cancel=document.getElementById("cancel");
-                cancel?.click();
-              },rej=>{
-                alert("opps! Can not post data"+rej);
-              });
-            }else{
-            }
-          },rej=>{
-            console.log("error"+rej);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllVehicleData(key.id).subscribe(res=>{
+          this.share.storeResObj=res;
+          if(this.share.storeResObj.vehiclenumber==formvalue.vehiclenumber && this.share.storeResObj.vehicletype==formvalue.vehicletype){
+            this.share.Vehiclecheck=1;
+            var obj={
+              company:formvalue.company,
+              startdate:formvalue.startdate,
+              enddate:formvalue.enddate,
+              cost:formvalue.cost,
+              unique:this.share.storeResObj._id,
+            };
+            this.api.addInsuranceData(obj).subscribe(res=>{
+              alert("Your data was posted successfully!");
+              this.insuranceform.reset();
+              let cancel=document.getElementById("cancel");
+              cancel?.click();
+            },rej=>{
+              alert("opps! Can not post data"+rej);
+            });
+          }
+        },rej=>{
+          console.log("error"+rej);
+        })
       }
     },rej=>{
         alert("opps! Somthing went wrong"+rej);
     })
     setTimeout(():any=>{
-      if(this.Vehiclecheck==1){
-        this.store=[];
+      if(this.share.Vehiclecheck==1){
+        this.share.store=[];
         this.get();
       }else{
         alert("Pleae register your vehicle in Add new vehicle from!");
@@ -173,43 +143,33 @@ export class AddInsuranceComponent implements OnInit {
   //to get the all forms details
 
   get(){
-    this.arr=[];
+    this.share.arr=[];
     this.api.getInsuranceData().subscribe(res=>{
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllInsuranceData(element.id).subscribe(res => {
-            this.storeInsureData = res;
-            console.log(this.storeInsureData);    
-            this.arr.push(this.storeInsureData);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllInsuranceData(key.id).subscribe(res => {
+          this.storeInsureData = res;
+          this.share.arr.push(this.storeInsureData);
+        })
       }
       setTimeout(()=>{
-        console.log("timout");
-        console.log(this.arr);
-        for (const key in this.arr) {
-          if (Object.prototype.hasOwnProperty.call(this.arr, key)) {
-            const element = this.arr[key];
-            this.api.getAllVehicleData(element.unique).subscribe(res => {
-              this.storeVehicleData = res;
-              this.createObj = {
-                vehiclenumber: this.storeVehicleData.vehiclenumber,
-                vehicletype: this.storeVehicleData.vehicletype,
-                company:element.company,
-                startdate: element.startdate,
-                enddate:element.enddate,
-                cost: element.cost,
-                unique: element.unique,
-                _id: element._id,
-                _rev: element._rev
-              };
-              console.log(this.createObj);
-              this.store.push(this.createObj);
-            });
-          }
+        for (const key of this.share.arr) {
+          this.api.getAllVehicleData(key.unique).subscribe(res => {
+            this.share.storeVehicleData = res;
+            this.share.createObj = {
+              vehiclenumber: this.share.storeVehicleData.vehiclenumber,
+              vehicletype: this.share.storeVehicleData.vehicletype,
+              company:key.company,
+              startdate: key.startdate,
+              enddate:key.enddate,
+              cost: key.cost,
+              unique: key.unique,
+              _id: key._id,
+              _rev: key._rev
+            };
+            this.share.store.push(this.share.createObj);
+          });
         }
       },500);
     },rej=>{
@@ -219,13 +179,9 @@ export class AddInsuranceComponent implements OnInit {
 
   //to delete the particular table field
   delete(data:any,data1:any){
-    console.log("delete called"+data._id);
-    console.log("delete called"+data1._rev);
     this.api.deleteInsuranceData(data._id,data1._rev).subscribe(res=>{
-      console.log("delete response get");
-      console.log(res);
       alert("your data has deleted, please refresh the page");
-      this.store=[];
+      this.share.store=[];
       this.get();
     },rej=>{
       alert("oops can not delete"+rej);
@@ -235,8 +191,9 @@ export class AddInsuranceComponent implements OnInit {
 
   //To set the values in form
   onEdit(row:any){
-    this.showAdd=false;
-    this.showUpdate=true;
+    this.share.showAdd=false;
+    this.share.showUpdate=true;
+    this.share.setFieldShow=false;
     this.insuranceform.controls['vehiclenumber'].setValue(row.vehiclenumber);
     this.insuranceform.controls['vehicletype'].setValue(row.vehicletype);
     this.insuranceform.controls['company'].setValue(row.company);
@@ -251,18 +208,15 @@ export class AddInsuranceComponent implements OnInit {
 
   // To update the existing values
   update(formvalue:NgForm){
-    console.log(formvalue);
     this.api.updateInsuranceData(formvalue).subscribe(res=>{
-      console.log("update success");
-      console.log(res);
       alert("Your data was updated successfully!");
       this.insuranceform.reset();
       let cancel=document.getElementById("cancel");
       cancel?.click();
-      this.store=[];
+      this.share.store=[];
       this.get();
     },rej=>{
-      console.log("can not update.....");
+      console.log("can not update.....",rej);
     })
   }
 }

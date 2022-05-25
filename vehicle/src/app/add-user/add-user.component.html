@@ -28,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of store | filter:this.share.searchText">
+        <tr *ngFor="let user of this.share.store | filter:this.share.searchText">
 
             <td>{{user.name}}</td>
             <td>{{user.username}}</td>
@@ -157,12 +157,12 @@
                 <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary" [disabled]="!userform.valid" *ngIf="showAdd"
+                <button type="button" class="btn btn-primary" [disabled]="!userform.valid" *ngIf="this.share.showAdd"
                     (click)="userCheck(this.userform.value)">
                     Add
                 </button>
                 <button type="button" id="cancel" class="btn btn-primary" [disabled]="!userform.valid"
-                    (click)="update(this.userform.value)" *ngIf="showUpdate">
+                    (click)="update(this.userform.value)" *ngIf="this.share.showUpdate">
                     Update
                 </button>
             </div>

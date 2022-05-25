@@ -8,7 +8,6 @@ import { HomeComponent } from './home/home.component';
 import { AboutProductComponent } from './about-product/about-product.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
-import { FirstmenuComponent } from './firstmenu/firstmenu.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { AddDriverComponent } from './add-driver/add-driver.component';
 import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
@@ -36,6 +35,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatDividerModule} from '@angular/material/divider';
 import { ReportCheckComponent } from './report-check/report-check.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { NavigateComponent } from './home/navigate/navigate.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AboutProductComponent,
     LogInComponent,
     ContactUsComponent,
-    FirstmenuComponent,
     AddUserComponent,
     AddDriverComponent,
     AddVehicleComponent,
@@ -55,6 +54,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AdminpageComponent,
     ReportCheckComponent,
     DashboardComponent,
+    NavigateComponent,
   ],
   imports: [
     BrowserModule,

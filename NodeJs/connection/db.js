@@ -1,5 +1,9 @@
+//import required
+
 const Cloudant = require("@cloudant/cloudant");
 const val = require("../config/config");
+
+// configure cloudant database using URL,USERNAME,PASSWORD
 
 var cloudant = Cloudant({
   url: val.CLOUDANT_URL,
@@ -8,6 +12,7 @@ var cloudant = Cloudant({
 });
 
 //insert function
+
 var insert = function (objectValue, dbname) {
   console.log(objectValue);
   return new Promise((resolve, reject) => {
@@ -20,7 +25,8 @@ var insert = function (objectValue, dbname) {
   });
 };
 
-//get all id from this function
+//get all id using this function from database
+
 var get = function (database_name) {
   return new Promise((resolve, reject) => {
     if (database_name == undefined) {
@@ -33,6 +39,7 @@ var get = function (database_name) {
 };
 
 //get all details about the particular id
+
 var getAll = function (id, database_name) {
   return new Promise((resolve, reject) => {
     if (id == undefined) {
@@ -45,7 +52,7 @@ var getAll = function (id, database_name) {
 };
 
 //delete function using id and rev
-deleted = function (_id, _rev, database_name) {
+var deleted = function (_id, _rev, database_name) {
   return new Promise((resolve, reject) => {
     if (_id == undefined || _rev == undefined) {
       return reject(id);
@@ -69,6 +76,8 @@ var update = function (objectValue, dbname) {
     }
   });
 };
+
+//export the funtions
 
 module.exports = {
   insert,

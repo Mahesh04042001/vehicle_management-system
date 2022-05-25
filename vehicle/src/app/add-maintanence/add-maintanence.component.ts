@@ -12,26 +12,12 @@ import { SharedserviceService } from '../service/sharedservice.service';
 })
 export class AddMaintanenceComponent implements OnInit {
   maintanenceform!:FormGroup;
-  alluser!:any;
-  store:any=[];
-  showAdd!:boolean;
-  showUpdate!:boolean;
-  storeDrobdownObj:any=[];
-  storeFieldObj:any;
-  storeResObj:any;
-  entryCheck:any=0;
-  storeMaintainData:any;
-  storeVehicleData:any;
-  createObj:any;
-  Vehiclecheck:any=0;
-  arr:any=[];
-  storeMaintanenceObj:any;
-  storeAllMaintObj:any;
+  
   constructor(private formbuilder:FormBuilder,private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
     this.maintanenceform=this.formbuilder.group({
-      vinNumber:['',Validators.required],
+      vinNumber:[''],
       vehiclenumber:['',Validators.required],
       vehicletype:['',Validators.required],
       date:['',Validators.required],
@@ -49,36 +35,33 @@ export class AddMaintanenceComponent implements OnInit {
   //To show add and hide update button function
   showOrHide(){
     this.maintanenceform.reset();
-    this.showAdd=true;
-    this.showUpdate=false;
+    this.share.showAdd=true;
+    this.share.showUpdate=false;
+    this.share.setFieldShow=true;
   }
   // To set the drobdown list
   setField(val:any){
-    this.entryCheck=0;
-    console.log("Hi"+val);
+    this.share.entryCheck=0;
     this.api.getAllVehicleData(val.target.value).subscribe(res=>{
-      console.log(res);
-      this.storeFieldObj=res;
-      this.maintanenceform.controls['vehiclenumber'].setValue(this.storeFieldObj.vehiclenumber);
-      this.maintanenceform.controls['vehicletype'].setValue(this.storeFieldObj.vehicletype);
+      this.share.storeFieldObj=res;
+      this.maintanenceform.controls['vehiclenumber'].setValue(this.share.storeFieldObj.vehiclenumber);
+      this.maintanenceform.controls['vehicletype'].setValue(this.share.storeFieldObj.vehicletype);
       this.api.getMaintanenceData().subscribe(res=>{
-        this.storeMaintanenceObj=res;
-        this.storeMaintanenceObj=this.storeMaintanenceObj.rows;
-        console.log(this.storeMaintanenceObj);
-        for (const key in this.storeMaintanenceObj) {
-            const element = this.storeMaintanenceObj[key];
-            this.api.getAllMaintanenceData(element.id).subscribe(res=>{
-              this.storeAllMaintObj=res;
-              if(this.storeAllMaintObj.unique==val.target.value){
-                this.entryCheck=1;
-                this.showAdd=false;
-              }
-            })
+        this.share.storeMaintanenceObj=res;
+        this.share.storeMaintanenceObj=this.share.storeMaintanenceObj.rows;
+        for (const key of this.share.storeMaintanenceObj) {
+          this.api.getAllMaintanenceData(key.id).subscribe(res=>{
+            this.share.storeAllMaintObj=res;
+            if(this.share.storeAllMaintObj.unique==val.target.value){
+              this.share.entryCheck=1;
+              this.share.showAdd=false;
+            }
+          })
         }
       })
     })
     setTimeout(() => {
-      if(this.entryCheck==1){
+      if(this.share.entryCheck==1){
         alert("vehicle number and type already exist try another one");
       }
     }, 500);
@@ -86,18 +69,14 @@ export class AddMaintanenceComponent implements OnInit {
 
   setValueInDropdown(){
     this.api.getVehicleData().subscribe(res=>{
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllVehicleData(element.id).subscribe(res=>{
-            console.log(res);
-            this.storeDrobdownObj.push(res);
-            },rej=>{
-              console.log("error"+rej);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllVehicleData(key.id).subscribe(res=>{
+          this.share.storeDrobdownObj.push(res);
+        },rej=>{
+          console.log("error"+rej);
+        })
       }
     },rej=>{
       alert("opps! Somthing went wrong"+rej);
@@ -107,51 +86,40 @@ export class AddMaintanenceComponent implements OnInit {
   //To add maintanence details
 
   add(formvalue:any){
-    this.showAdd=false;
+    this.share.showAdd=false;
     this.api.getVehicleData().subscribe(res=>{
-      console.log(res);
-      console.log("response is comming");
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      console.log(this.alluser);
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          console.log(element.id);
-          this.api.getAllVehicleData(element.id).subscribe(res=>{
-            console.log(res);
-            this.storeResObj=res;
-            if(this.storeResObj.vehiclenumber==formvalue.vehiclenumber && this.storeResObj.vehicletype==formvalue.vehicletype){
-              console.log(this.storeResObj._id);
-              this.Vehiclecheck=1;
-              var obj={
-                date:formvalue.date,
-                cost:formvalue.cost,
-                description:formvalue.description,
-                unique:this.storeResObj._id,
-              };
-              this.api.addMaintanenceData(obj).subscribe(res=>{
-                console.log("hello"+res);
-                alert("Your data was posted successfully!");
-                this.maintanenceform.reset();
-                let cancel=document.getElementById("cancel");
-                cancel?.click();
-              },rej=>{
-                alert("opps! Can not post data"+rej);
-              });
-            }else{
-            }
-          },rej=>{
-            console.log("error"+rej);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllVehicleData(key.id).subscribe(res=>{
+          this.share.storeResObj=res;
+          if(this.share.storeResObj.vehiclenumber==formvalue.vehiclenumber && this.share.storeResObj.vehicletype==formvalue.vehicletype){
+            this.share.Vehiclecheck=1;
+            var obj={
+              date:formvalue.date,
+              cost:formvalue.cost,
+              description:formvalue.description,
+              unique:this.share.storeResObj._id,
+            };
+            this.api.addMaintanenceData(obj).subscribe(res=>{
+              alert("Your data was posted successfully!");
+              this.maintanenceform.reset();
+              let cancel=document.getElementById("cancel");
+              cancel?.click();
+            },rej=>{
+              alert("opps! Can not post data"+rej);
+            });
+          }
+        },rej=>{
+          console.log("error"+rej);
+        })
       }
     },rej=>{
         alert("opps! Somthing went wrong"+rej);
     })
     setTimeout(():any=>{
-      if(this.Vehiclecheck==1){
-        this.store=[];
+      if(this.share.Vehiclecheck==1){
+        this.share.store=[];
         this.get();
       }else{
         alert("Pleae register your vehicle in Add new vehicle from!");
@@ -165,42 +133,32 @@ export class AddMaintanenceComponent implements OnInit {
   // //to get all the maintanence details form database
 
   get(){
-    this.arr=[];
+    this.share.arr=[];
     this.api.getMaintanenceData().subscribe(res=>{
-      this.alluser=res;
-      this.alluser=this.alluser.rows;
-      for (const key in this.alluser) {
-        if (Object.prototype.hasOwnProperty.call(this.alluser, key)) {
-          const element = this.alluser[key];
-          this.api.getAllMaintanenceData(element.id).subscribe(res => {
-            this.storeMaintainData = res;
-            console.log(this.storeMaintainData);    
-            this.arr.push(this.storeMaintainData);
-          })
-        }
+      this.share.allIdObj=res;
+      this.share.allIdObj=this.share.allIdObj.rows;
+      for (const key of this.share.allIdObj) {
+        this.api.getAllMaintanenceData(key.id).subscribe(res => {
+          this.share.storeMaintainData = res;
+          this.share.arr.push(this.share.storeMaintainData);
+        })
       }
       setTimeout(()=>{
-        console.log("timout");
-        console.log(this.arr);
-        for (const key in this.arr) {
-          if (Object.prototype.hasOwnProperty.call(this.arr, key)) {
-            const element = this.arr[key];
-            this.api.getAllVehicleData(element.unique).subscribe(res => {
-              this.storeVehicleData = res;
-              this.createObj = {
-                vehiclenumber: this.storeVehicleData.vehiclenumber,
-                vehicletype: this.storeVehicleData.vehicletype,
-                date: element.date,
-                cost: element.cost,
-                description: element.description,
-                unique: element.unique,
-                _id: element._id,
-                _rev: element._rev
-              };
-              console.log(this.createObj);
-              this.store.push(this.createObj);
-            });
-          }
+        for (const key of this.share.arr) {
+          this.api.getAllVehicleData(key.unique).subscribe(res => {
+            this.share.storeVehicleData = res;
+            this.share.createObj = {
+              vehiclenumber: this.share.storeVehicleData.vehiclenumber,
+              vehicletype: this.share.storeVehicleData.vehicletype,
+              date: key.date,
+              cost: key.cost,
+              description: key.description,
+              unique: key.unique,
+              _id: key._id,
+              _rev: key._rev
+            };
+            this.share.store.push(this.share.createObj);
+          });
         }
       },500);
     },rej=>{
@@ -212,10 +170,8 @@ export class AddMaintanenceComponent implements OnInit {
   //To delete the particular details
   delete(data:any){
     this.api.deleteMaintanenceData(data._id,data._rev).subscribe(res=>{
-      console.log("delete response get");
-      console.log(res);
       alert("your data has deleted, please refresh the page");
-      this.store=[];
+      this.share.store=[];
       this.get();
     },rej=>{
       alert("oops can not delete"+rej);
@@ -224,8 +180,9 @@ export class AddMaintanenceComponent implements OnInit {
   
   //To set the values in form fileds
   onEdit(row:any){
-    this.showAdd=false;
-    this.showUpdate=true;
+    this.share.showAdd=false;
+    this.share.showUpdate=true;
+    this.share.setFieldShow=false;
     this.maintanenceform.controls['vehiclenumber'].setValue(row.vehiclenumber);
     this.maintanenceform.controls['vehicletype'].setValue(row.vehicletype);
     this.maintanenceform.controls['date'].setValue(row.date);
@@ -238,18 +195,15 @@ export class AddMaintanenceComponent implements OnInit {
   //To update the existing values in database
 
   update(formvalue:NgForm){
-    console.log(formvalue);
     this.api.updateMaintanenceData(formvalue).subscribe(res=>{
-      console.log("update success");
-      console.log(res);
       alert("Your data was updated successfully!");
       this.maintanenceform.reset();
       let cancel=document.getElementById("cancel");
       cancel?.click();
-      this.store=[];
+      this.share.store=[];
       this.get();
     },rej=>{
-      console.log("can not update.....");
+      console.log("can not update.....",rej);
     })
   }
 }

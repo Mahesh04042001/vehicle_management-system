@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../service/api.service';
+import { SharedserviceService } from '../service/sharedservice.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,108 +16,105 @@ export class DashboardComponent implements OnInit {
   maintanenceExp: any=0;
   fuelExp: any=0;
   totalExp: any=0;
-  store:any;
   storeDriver:any;
 
 
 
-  constructor(private api:ApiService) { }
+  constructor(private api:ApiService,public share:SharedserviceService) { }
 
   ngOnInit(): void {
     this.getfuelExp();
     this.getinsuranceExp();
     this.getMaintanenceExp();
     setTimeout(() => {
+      this.getVehicle();
       this.getAdmin();
       this.getDriver();
-      this.getVehicle();
-    }, 500);
+    }, 1000);
     
     this.getTotal();
   }
 
+  //get the Total number of admin
+
   getAdmin(){
     this.api.getUserData().subscribe(res=>{
-      this.store=res;
-      this.store=this.store.rows;
-      console.log(this.store.length);
-      this.noOfAdmin=this.store.length;
+      this.share.store=res;
+      this.share.store=this.share.store.rows;
+      this.noOfAdmin=this.share.store.length;
     })
   }
+
+  //get the Total number of Driver
+
   getDriver(){
     this.api.getDriverData().subscribe(res=>{
-      this.store=res;
-      this.store=this.store.rows;
-      console.log(this.store.length);
-      this.noOfDriver=this.store.length;
+      this.share.store=res;
+      this.share.store=this.share.store.rows;
+      this.noOfDriver=this.share.store.length;
     })
   }
+
+  //get the Total number of vehicle
+
   getVehicle(){
     this.api.getVehicleData().subscribe(res=>{
-      this.store=res;
-      this.store=this.store.rows;
-      console.log(this.store.length);
-      this.noOfVehicle=this.store.length;
+      this.share.store=res;
+      this.share.store=this.share.store.rows;
+      this.noOfVehicle=this.share.store.length;
     })
   }
+
+  //get the Total expenditure of insurance
+
   getinsuranceExp(){
     this.api.getInsuranceData().subscribe(res=>{
-      this.store=res;
-      this.store=this.store.rows;
-      console.log('hello');
-      console.log(this.store);
-      for (const key in this.store) {
-          const element = this.store[key];
-          console.log(element.id);
-          this.api.getAllInsuranceData(element.id).subscribe(res=>{
-            this.store=res;
-            console.log(this.store.cost);
-            this.insuranceExp+=this.store.cost;
-            console.log(this.insuranceExp);
-          })
+      this.share.store=res;
+      this.share.store=this.share.store.rows;
+      for (const key of this.share.store) {
+        this.api.getAllInsuranceData(key.id).subscribe(res=>{
+          this.share.store=res;
+          this.insuranceExp+=this.share.store.cost;
+        })
       }
     })
   }
+
+  //get the Total expenditure of maintanence
+
   getMaintanenceExp(){
     this.api.getMaintanenceData().subscribe(res=>{
-      this.store=res;
-      this.store=this.store.rows;
-      console.log('hello');
-      console.log(this.store);
-      for (const key in this.store) {
-          const element = this.store[key];
-          console.log(element.id);
-          this.api.getAllMaintanenceData(element.id).subscribe(res=>{
-            this.store=res;
-            console.log(this.store.cost);
-            this.maintanenceExp+=this.store.cost;
-            console.log(this.maintanenceExp);
-          })
+      this.share.store=res;
+      this.share.store=this.share.store.rows;
+      for (const key of this.share.store) {
+        this.api.getAllMaintanenceData(key.id).subscribe(res=>{
+          this.share.store=res;
+          this.maintanenceExp+=this.share.store.cost;
+        })
       }
     })
   }
+
+  //get the Total expenditure of fuel
+
   getfuelExp(){
     this.api.getFuleData().subscribe(res=>{
-      this.store=res;
-      this.store=this.store.rows;
-      console.log('hello');
-      console.log(this.store);
-      for (const key in this.store) {
-          const element = this.store[key];
-          console.log(element.id);
-          this.api.getAllFuelData(element.id).subscribe(res=>{
-            this.store=res;
-            console.log(this.store.cost);
-            this.fuelExp+=this.store.cost;
-            console.log(this.fuelExp);
-          })
+      this.share.store=res;
+      this.share.store=this.share.store.rows;
+      for (const key of this.share.store) {
+        this.api.getAllFuelData(key.id).subscribe(res=>{
+          this.share.store=res;
+          this.fuelExp+=this.share.store.cost;
+        })
       }
     })
   }
+
+  //get the Total expenditure of system
+
   getTotal(){
     setTimeout(() => {
       this.totalExp=this.insuranceExp+this.maintanenceExp+this.fuelExp;
-      console.log(this.totalExp);
     },1000);
     
   }
