@@ -187,6 +187,7 @@ export class AddMaintanenceComponent implements OnInit {
     this.maintanenceform.controls['vehicletype'].setValue(row.vehicletype);
     this.maintanenceform.controls['date'].setValue(row.date);
     this.maintanenceform.controls['cost'].setValue(row.cost);
+    this.maintanenceform.controls['description'].setValue(row.description);
     this.maintanenceform.controls['_id'].setValue(row._id);
     this.maintanenceform.controls['_rev'].setValue(row._rev);
     this.maintanenceform.controls['unique'].setValue(row.unique);

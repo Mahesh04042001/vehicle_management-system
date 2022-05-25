@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { ServiceService } from './check/service.service';
-import { SharedserviceService } from './service/sharedservice.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +7,6 @@ import { SharedserviceService } from './service/sharedservice.service';
 })
 export class AppComponent {
   title = 'vehicle';
-  sideBarOpen=true;
-  constructor(public ser:ServiceService) { }
+  constructor() { }
  
 }

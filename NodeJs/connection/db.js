@@ -14,7 +14,6 @@ var cloudant = Cloudant({
 //insert function
 
 var insert = function (objectValue, dbname) {
-  console.log(objectValue);
   return new Promise((resolve, reject) => {
     if (objectValue == undefined) {
       return reject(objectValue);

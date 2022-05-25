@@ -12,7 +12,6 @@ export class ApiService {
 
   //Add User Component api services-----------------------------------------------
   addUser(doc:any){
-    console.log(doc);
     return this.http.post('http://localhost:8000/postUser/',doc);
   }
 
@@ -27,7 +26,6 @@ export class ApiService {
     return this.http.delete(`http://localhost:8000/deleteUser/${id}/${id1}`);
   }
   updateUser(doc:any){
-    console.log(doc);
     return this.http.put('http://localhost:8000/updateUser/',doc);
   }
   //------------------------------------------------------------------------------
@@ -35,7 +33,6 @@ export class ApiService {
   //Add Driver Component Api Services--------------------------------------------
 
   addDriverData(doc:any){
-    console.log(doc);
     return this.http.post('http://localhost:8000/postDriver/',doc);
   }
 
@@ -50,7 +47,6 @@ export class ApiService {
     return this.http.delete(`http://localhost:8000/deleteDriver/${id}/${id1}`);
   }
   updateDriverData(doc:any){
-    console.log(doc);
     return this.http.put('http://localhost:8000/updateDriver/',doc);
   }
 
@@ -59,7 +55,6 @@ export class ApiService {
   //Add Vehicle Component Api Services--------------------------------------------
 
   addVehicleData(doc:any){
-    console.log(doc);
     return this.http.post('http://localhost:8000/postVehicle/',doc);
   }
 
@@ -74,7 +69,6 @@ export class ApiService {
     return this.http.delete(`http://localhost:8000/deleteVehicle/${id}/${id1}`);
   }
   updateVehicleData(doc:any){
-    console.log(doc);
     return this.http.put('http://localhost:8000/updateVehicle/',doc);
   }
 
@@ -84,7 +78,6 @@ export class ApiService {
   //Add Fuel Component Api Services--------------------------------------------
 
   addFuelData(doc:any){
-    console.log(doc);
     return this.http.post('http://localhost:8000/postFuel/',doc);
   }
 
@@ -99,7 +92,6 @@ export class ApiService {
     return this.http.delete(`http://localhost:8000/deleteFuel/${id}/${id1}`);
   }
   updateFuelData(doc:any){
-    console.log(doc);
     return this.http.put('http://localhost:8000/updateFuel/',doc);
   }
 
@@ -109,7 +101,6 @@ export class ApiService {
   //Add Insurance Component Api Services--------------------------------------------
 
   addInsuranceData(doc:any){
-    console.log(doc);
     return this.http.post('http://localhost:8000/postInsurance/',doc);
   }
 
@@ -124,7 +115,6 @@ export class ApiService {
     return this.http.delete(`http://localhost:8000/deleteInsurance/${id}/${id1}`);
   }
   updateInsuranceData(doc:any){
-    console.log(doc);
     return this.http.put('http://localhost:8000/updateInsurance/',doc);
   }
 
@@ -134,7 +124,6 @@ export class ApiService {
   //Add Maintanence Component Api Services--------------------------------------------
 
   addMaintanenceData(doc:any){
-    console.log(doc);
     return this.http.post('http://localhost:8000/postMaintanence/',doc);
   }
 
@@ -149,14 +138,8 @@ export class ApiService {
     return this.http.delete(`http://localhost:8000/deleteMaintanence/${id}/${id1}`);
   }
   updateMaintanenceData(doc:any){
-    console.log(doc);
     return this.http.put('http://localhost:8000/updateMaintanence/',doc);
   }
 
   //------------------------------------------------------------------------------
-
-  // getAll(){
-
-  // }
-
 }

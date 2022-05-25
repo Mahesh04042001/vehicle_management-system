@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ServiceService } from '../check/service.service';
 import { ApiService } from '../service/api.service';
+import { ServiceService } from '../check/service.service';
 import { SharedserviceService } from '../service/sharedservice.service';
 
 @Component({
@@ -15,8 +15,8 @@ import { SharedserviceService } from '../service/sharedservice.service';
 export class LogInComponent implements OnInit {
   loginform !:FormGroup;
   logIncheck:any=0;
-  storeCredentials:any;
-  constructor(private formbuilder:FormBuilder,private api:ApiService,private route:Router,private show:SharedserviceService,private ser:ServiceService) { }
+  storeCredentials:any=[];
+  constructor(private formbuilder:FormBuilder,private api:ApiService,private route:Router,private show:SharedserviceService,public ser:ServiceService) { }
 
   ngOnInit(): void {
     this.loginform=this.formbuilder.group({
@@ -37,22 +37,24 @@ export class LogInComponent implements OnInit {
           for (const iterator of this.show.store) {
             if(iterator.username==formvalue.username && iterator.password==formvalue.password){
               this.logIncheck=1;
-              this.storeCredentials=iterator;
+              this.storeCredentials.push(iterator);
             }
           }
         })
       }
       setTimeout(()=>{
-        if(this.logIncheck==1){
+        if(this.logIncheck==1 && this.storeCredentials.length!=0){
           localStorage.setItem("currentUser",JSON.stringify(this.storeCredentials));
-          this.ser.showTag=true;
+          this.loginform.reset();
+          this.ser.showTag=false;
+          this.storeCredentials=[];
           this.route.navigate(['/menu']);
         }else{
           alert("Your account does not exist!");
           this.route.navigate(['/login']);
           this.loginform.reset();
         }
-      },500);
+      },1000);
     })
   }
 }

@@ -18,7 +18,7 @@ import { HomemenulayoutComponent } from './homemenulayout/homemenulayout.compone
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminpageComponent } from './adminpage/adminpage.component';
-import{HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -35,7 +35,6 @@ import {MatListModule} from '@angular/material/list';
 import {MatDividerModule} from '@angular/material/divider';
 import { ReportCheckComponent } from './report-check/report-check.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { NavigateComponent } from './home/navigate/navigate.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +53,6 @@ import { NavigateComponent } from './home/navigate/navigate.component';
     AdminpageComponent,
     ReportCheckComponent,
     DashboardComponent,
-    NavigateComponent,
   ],
   imports: [
     BrowserModule,

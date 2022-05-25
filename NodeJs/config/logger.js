@@ -10,7 +10,6 @@ const logger = createLogger({
         format.timestamp({ format: "MMM-DD-YYYY HH:mm:ss" }),
         format.json()
       ),
-      //   format: format.combine(format.timestamp(), format.simple()),
     }),
     new winston.transports.File({
       filename: "errors.log",

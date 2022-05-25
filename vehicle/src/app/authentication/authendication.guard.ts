@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthendicationGuard implements CanActivate {
   constructor(public router:Router){}
+  //prevent URL
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {

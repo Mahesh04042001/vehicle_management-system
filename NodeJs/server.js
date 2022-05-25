@@ -690,7 +690,7 @@ app.put("/updateMaintanence", (request, response) => {
     _rev: request.body._rev,
     date: request.body.date,
     cost: request.body.cost,
-    description: request.body.cost,
+    description: request.body.description,
     unique: request.body.unique,
   };
   maintanenceController
